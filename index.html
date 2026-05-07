@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>抖音直播带货 · 爆款榜日报 2026年05月08日</title>
+<title>抖音直播带货 · 爆款榜日报</title>
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
 <style>
 * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -13,33 +13,38 @@ body { font-family: -apple-system, BlinkMacSystemFont, 'Microsoft YaHei', sans-s
 .header h1 { font-size: 28px; color: #ffd700; margin-bottom: 8px; }
 .header .sub { color: #889; font-size: 14px; }
 .header .date { color: #ff6b6b; font-size: 16px; margin-top: 6px; }
+.date-nav { display: flex; justify-content: center; align-items: center; gap: 16px; margin-bottom: 24px; }
+.date-nav button { background: #1a1a2e; color: #ffd700; border: 1px solid #ffd700; padding: 8px 16px; border-radius: 8px; cursor: pointer; font-size: 14px; transition: all 0.2s; }
+.date-nav button:hover { background: rgba(255,215,0,0.15); }
+.date-nav button:disabled { color: #555; border-color: #444; cursor: not-allowed; }
+.date-nav .current-date { font-size: 18px; font-weight: bold; color: #fff; min-width: 120px; text-align: center; }
+.date-nav input[type="date"] { background: #1a1a2e; color: #fff; border: 1px solid #2a2a4a; padding: 6px 12px; border-radius: 8px; font-size: 14px; }
+.date-nav input[type="date"]::-webkit-calendar-picker-indicator { filter: invert(1); }
 .stats-row { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 16px; margin-bottom: 24px; }
 .stat-card { background: #1a1a2e; border-radius: 12px; padding: 20px; text-align: center; border: 1px solid #2a2a4a; }
 .stat-card .value { font-size: 32px; font-weight: bold; color: #ffd700; }
 .stat-card .label { font-size: 13px; color: #889; margin-top: 4px; }
+.charts-row { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin: 24px 0; }
+.chart-box { background: #1a1a2e; border-radius: 12px; padding: 20px; border: 1px solid #2a2a4a; }
+.chart-box h3 { color: #ffd700; font-size: 15px; margin-bottom: 16px; }
+.chart-box canvas { max-height: 300px; }
 .section-title { font-size: 20px; color: #ffd700; margin: 24px 0 16px; padding-left: 12px; border-left: 3px solid #ffd700; }
 .table-wrap { background: #1a1a2e; border-radius: 12px; overflow: hidden; border: 1px solid #2a2a4a; }
 table { width: 100%; border-collapse: collapse; }
-thead th { background: #16213e; color: #ffd700; padding: 12px 16px; text-align: left; font-size: 13px; position: sticky; top: 0; }
+thead th { background: #16213e; color: #ffd700; padding: 12px 16px; text-align: left; font-size: 13px; }
 tbody td { padding: 10px 16px; font-size: 13px; border-bottom: 1px solid #2a2a4a; }
 tbody tr:hover { background: rgba(255,215,0,0.05); }
 tbody tr:hover .product-link { color: #ffd700; }
 .rank { font-weight: bold; font-size: 16px; text-align: center; width: 50px; }
-.rank-1 { color: #ffd700; }
-.rank-2 { color: #c0c0c0; }
-.rank-3 { color: #cd7f32; }
+.rank-1 { color: #ffd700; } .rank-2 { color: #c0c0c0; } .rank-3 { color: #cd7f32; }
 .product-link { color: #4ecdc4; text-decoration: none; display: block; max-width: 340px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; transition: color 0.2s; }
 .product-link:hover { color: #ffd700; text-decoration: underline; }
-.product-cell { max-width: 360px; }
 .shop-name { font-size: 11px; color: #666; margin-top: 2px; }
 .unit-price { font-size: 11px; color: #ffd700; margin-top: 1px; }
 .sales { font-weight: bold; color: #ff6b6b; }
 .commission { color: #4ecdc4; font-weight: bold; }
 .commission-high { color: #ffd700; }
-.charts-row { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin: 24px 0; }
-.chart-box { background: #1a1a2e; border-radius: 12px; padding: 20px; border: 1px solid #2a2a4a; }
-.chart-box h3 { color: #ffd700; font-size: 15px; margin-bottom: 16px; }
-.chart-box canvas { max-height: 300px; }
+.no-data { text-align: center; padding: 60px; color: #555; font-size: 16px; }
 .footer { text-align: center; padding: 20px; color: #555; font-size: 12px; }
 </style>
 </head>
@@ -48,142 +53,144 @@ tbody tr:hover .product-link { color: #ffd700; }
 
 <div class="header">
   <h1>📊 抖音直播带货 · 爆款榜日报</h1>
-  <div class="date">2026年5月8日</div>
-  <div class="sub">数据来源：巨量百应 · 爆款榜（昨日 / 直播） | 自动化采集 by agent-browser</div>
+  <div class="date" id="dateDisplay">--</div>
+  <div class="sub">数据来源：巨量百应 · 爆款榜（昨日 / 直播） | 自动化采集</div>
+</div>
+
+<div class="date-nav">
+  <button onclick="changeDate(-1)" id="btnPrev">◀ 前一天</button>
+  <span class="current-date" id="currentDate">--</span>
+  <input type="date" id="datePicker" onchange="jumpToDate(this.value)">
+  <button onclick="changeDate(1)" id="btnNext">后一天 ▶</button>
 </div>
 
 <div class="stats-row">
-  <div class="stat-card">
-    <div class="value" id="totalSales">--</div>
-    <div class="label">昨日总销量（单）</div>
-  </div>
-  <div class="stat-card">
-    <div class="value" id="avgCommission">--</div>
-    <div class="label">平均佣金率</div>
-  </div>
-  <div class="stat-card">
-    <div class="value" id="maxEarn">--</div>
-    <div class="label">最高佣金（¥/单）</div>
-  </div>
-  <div class="stat-card">
-    <div class="value" id="topProduct">--</div>
-    <div class="label">销量冠军</div>
-  </div>
+  <div class="stat-card"><div class="value" id="totalSales">--</div><div class="label">昨日总销量</div></div>
+  <div class="stat-card"><div class="value" id="avgCommission">--</div><div class="label">平均佣金率</div></div>
+  <div class="stat-card"><div class="value" id="maxEarn">--</div><div class="label">最高佣金 (¥/单)</div></div>
+  <div class="stat-card"><div class="value" id="topProduct">--</div><div class="label">销量冠军</div></div>
 </div>
 
 <div class="charts-row">
-  <div class="chart-box">
-    <h3>📈 Top 10 昨日销量 (万单)</h3>
-    <canvas id="salesChart"></canvas>
-  </div>
-  <div class="chart-box">
-    <h3>💰 佣金率对比 (%)</h3>
-    <canvas id="commissionChart"></canvas>
-  </div>
+  <div class="chart-box"><h3>📈 Top 10 昨日销量</h3><canvas id="salesChart"></canvas></div>
+  <div class="chart-box"><h3>💰 佣金率对比 (%)</h3><canvas id="commissionChart"></canvas></div>
 </div>
 
 <h2 class="section-title">🏆 完整榜单 Top 20</h2>
 <div class="table-wrap">
-<table>
-<thead>
-  <tr><th style="width:50px">排名</th><th>商品名称 / 店铺</th><th style="width:100px">昨日销量</th><th style="width:130px">佣金</th></tr>
-</thead>
-<tbody id="tableBody"></tbody>
-</table>
+<table><thead><tr><th style="width:50px">排名</th><th>商品名称 / 店铺</th><th style="width:100px">昨日销量</th><th style="width:130px">佣金</th></tr></thead>
+<tbody id="tableBody"></tbody></table>
 </div>
 
-<div class="footer">
-  点击商品名称可跳转至抖音电商商品详情页 &nbsp;|&nbsp; Generated by agent-browser automation &copy; 2026
-</div>
-
+<div class="footer">点击商品名称跳转详情页 | 数据来源: 巨量百应</div>
 </div>
 
 <script>
-// ---- Data from API ----
-var rawData = [{"rank": "1", "title": "【蔡徐坤代言】BUV绿泥洗面奶控油细腻毛孔清洁黑头闭口男女通用", "detail_url": "https://haohuo.jinritemai.com/views/product/item2?id=3632234840075719990", "sales": "6万", "commission": "5%赚¥2.50", "cos_ratio": 5, "cos_fee": 250, "shop_name": "BUV笔薇官方旗舰店", "cover": "https://p3-aio.ecombdimg.com/obj/ecom-shop-material/png_m_0856fb03bc90583daf27dcef37504898_sx_1302084_www1280-1280", "unit_price": 50.0}, {"rank": "2", "title": "公仔牌顽渍净洗衣粉轻松搓洗去污渍除菌除螨3倍洁净去渍家用去黄", "detail_url": "https://haohuo.jinritemai.com/views/product/item2?id=3725778917873811811", "sales": "6万", "commission": "33%赚¥9.87", "cos_ratio": 33, "cos_fee": 986, "shop_name": "公仔牌官方旗舰店", "cover": "https://p9-aio.ecombdimg.com/obj/ecom-shop-material/jpeg_m_9dafcbf122637a7f6898920c3e6e1a67_sx_338021_www800-800", "unit_price": 29.88}, {"rank": "3", "title": "【重磅新品】立白大师香氛天然爆香顽渍净香水级洗衣粉深层洁净sc", "detail_url": "https://haohuo.jinritemai.com/views/product/item2?id=3814779953875124236", "sales": "5万", "commission": "5%赚¥1.50", "cos_ratio": 5, "cos_fee": 150, "shop_name": "立白官方旗舰店", "cover": "https://p9-aio.ecombdimg.com/obj/ecom-shop-material/png_m_b120e3b1c2b7456d26d71a34cdd8310d_sx_3967638_www2048-2048", "unit_price": 30.0}, {"rank": "4", "title": "编码【D066-D166】韩国 新款 T恤设", "detail_url": "https://haohuo.jinritemai.com/views/product/item2?id=3818352821061943783", "sales": "5万", "commission": "5%赚¥1.50", "cos_ratio": 5, "cos_fee": 150, "shop_name": "come from korea", "cover": "https://p9-aio.ecombdimg.com/obj/ecom-shop-material/png_m_e315b7c3d2eafe3284a66f6577f0b947_sx_1451407_www1280-1280", "unit_price": 30.0}, {"rank": "5", "title": "【益生菌卫生巾】迷你巾医护级姨妈巾超薄亲肤超薄透气日夜用迷你巾", "detail_url": "https://haohuo.jinritemai.com/views/product/item2?id=3723009520671261035", "sales": "4万", "commission": "5%赚¥0.50", "cos_ratio": 5, "cos_fee": 50, "shop_name": "高端女生", "cover": "https://p3-aio.ecombdimg.com/obj/ecom-shop-material/SyNGwKSf_m_4304302d4825af45eba8f12c8d16d9a1_sx_515594_www2186-2186", "unit_price": 10.0}, {"rank": "6", "title": "老管家杀蟑饵剂厨房家用室内除小强专用学生宿舍灭蟑螂杀虫剂神器", "detail_url": "https://haohuo.jinritemai.com/views/product/item2?id=3620553568169403454", "sales": "4万", "commission": "10%赚¥0.99", "cos_ratio": 10, "cos_fee": 99, "shop_name": "老管家家居生活旗舰店", "cover": "https://p9-aio.ecombdimg.com/obj/ecom-shop-material/jpeg_m_8cd8a2da2addb99dde7dda53f9b53429_sx_170089_www800-800", "unit_price": 9.9}, {"rank": "7", "title": "JM肌司研进口紫苏急救面膜升级补水保湿护肤贴片1盒", "detail_url": "https://haohuo.jinritemai.com/views/product/item2?id=3754882421527543926", "sales": "3万", "commission": "5%赚¥5.00", "cos_ratio": 5, "cos_fee": 500, "shop_name": "JMSOLUTION护肤旗舰店", "cover": "https://p3-aio.ecombdimg.com/obj/ecom-shop-material/jpeg_m_c734c118e22be0ddfe528c39b5ccaaab_sx_271868_www800-800", "unit_price": 100.0}, {"rank": "8", "title": "KOROLO蓬蓬发型粉饼补色遮白发缝粉蓬松自然01", "detail_url": "https://haohuo.jinritemai.com/views/product/item2?id=3813329777444651048", "sales": "3万", "commission": "5%赚¥2.00", "cos_ratio": 5, "cos_fee": 200, "shop_name": "量咖专营店", "cover": "https://p9-aio.ecombdimg.com/obj/ecom-shop-material/png_m_c1ad44fb09f7c873be34d0573d528dac_sx_1395301_www1280-1280", "unit_price": 40.0}, {"rank": "9", "title": "【秋瓷炫小鱼海棠推荐】eiio水光面膜补水保湿透亮嫩肤紧致抗皱滋养", "detail_url": "https://haohuo.jinritemai.com/views/product/item2?id=3632053459521540584", "sales": "3万", "commission": "5%赚¥4.95", "cos_ratio": 5, "cos_fee": 495, "shop_name": "EIIO奕沃官方旗舰店", "cover": "https://p3-aio.ecombdimg.com/obj/ecom-shop-material/png_m_c148d89272ff056402fdf2e30b850b7b_sx_187607_www800-800", "unit_price": 99.0}, {"rank": "10", "title": "老爹鞋洞洞鞋女款2026新款夏季外穿沙滩防滑透气防臭厚底女士凉鞋", "detail_url": "https://haohuo.jinritemai.com/views/product/item2?id=3813661443325297099", "sales": "3万", "commission": "20%投放期5%最高赚¥5.38", "cos_ratio": 20, "cos_fee": 538, "shop_name": "安尚芬官方旗舰店", "cover": "https://p9-aio.ecombdimg.com/obj/ecom-shop-material/jpeg_m_09d7cc46b11b5d29c9da2e586f224bc9_sx_185191_www800-800", "unit_price": 26.9}, {"rank": "11", "title": "【顺丰现货】海南妃子笑荔枝当季热带新鲜水果批发包邮4-4.5斤", "detail_url": "https://haohuo.jinritemai.com/views/product/item2?id=3817825403465236558", "sales": "7万", "commission": "9%赚¥4.49", "cos_ratio": 9, "cos_fee": 449, "shop_name": "于泡泡水果旗舰店", "cover": "https://p9-aio.ecombdimg.com/obj/ecom-shop-material/jpeg_m_0fb88ff18059ba00b7c9fee3770fa164_sx_318745_www1200-1200", "unit_price": 49.89}, {"rank": "12", "title": "2号链接【B505-B605】小粥姐姐2026春夏韩系新款时尚女装集合链接", "detail_url": "https://haohuo.jinritemai.com/views/product/item2?id=3818276652165759430", "sales": "2万", "commission": "5%赚¥1.50", "cos_ratio": 5, "cos_fee": 150, "shop_name": "小粥姐姐的2店", "cover": "https://p3-aio.ecombdimg.com/obj/ecom-shop-material/jpeg_m_51f94c64bfede7aee366a226c8b4bef4_sx_618222_www2000-2000", "unit_price": 30.0}, {"rank": "13", "title": "美式街头侧边条纹速干休闲裤女夏季宽松显瘦阔腿伞兵裤", "detail_url": "https://haohuo.jinritemai.com/views/product/item2?id=3817397594624229871", "sales": "2万", "commission": "20%赚¥7.98", "cos_ratio": 20, "cos_fee": 798, "shop_name": "丰阳胡胡5号知夏社", "cover": "https://p9-aio.ecombdimg.com/obj/ecom-shop-material/png_m_065891d29c5d4f1250193b337b0c50f2_sx_2462019_www1344-1344", "unit_price": 39.9}, {"rank": "14", "title": "缝纫先生(升级版）夏季锦氨面料男女同款薄款直筒速干裤透气冰丝裤", "detail_url": "https://haohuo.jinritemai.com/views/product/item2?id=3809259277990887758", "sales": "43万", "commission": "15%赚¥4.49", "cos_ratio": 15, "cos_fee": 449, "shop_name": "崔万志缝纫先生工厂", "cover": "https://p9-aio.ecombdimg.com/obj/ecom-shop-material/jpeg_m_f518e429980cbf9ed7cb088d44357240_sx_133590_www1000-1000", "unit_price": 29.93}, {"rank": "15", "title": "Ufeel凉感奶皮高腰收腹无痕隐形提臀塑形10A抗菌加长底裆内裤1912", "detail_url": "https://haohuo.jinritemai.com/views/product/item2?id=3763441477359895001", "sales": "72万", "commission": "5%赚¥2.00", "cos_ratio": 5, "cos_fee": 200, "shop_name": "Ufeel女装旗舰店", "cover": "https://p3-aio.ecombdimg.com/obj/ecom-shop-material/jpeg_m_ff21b91332cf6e5f4e01680285b0e67d_sx_332373_www800-800", "unit_price": 40.0}, {"rank": "16", "title": "麦醉侠 湿凉皮7袋*310g/袋红油麻酱凉皮开袋即食现做现发", "detail_url": "https://haohuo.jinritemai.com/views/product/item2?id=3736324569976406188", "sales": "165万", "commission": "5%赚¥1.00", "cos_ratio": 5, "cos_fee": 100, "shop_name": "麦醉侠速食旗舰店", "cover": "https://p3-aio.ecombdimg.com/obj/ecom-shop-material/jpeg_m_2d31ff16144d677be521fef26d9f90a6_sx_413306_www2000-2000", "unit_price": 20.0}, {"rank": "17", "title": "【胡杨峰】新疆软蜜无花果250g*1袋/2袋", "detail_url": "https://haohuo.jinritemai.com/views/product/item2?id=3815381444650467332", "sales": "2万", "commission": "15%赚¥4.49", "cos_ratio": 15, "cos_fee": 449, "shop_name": "胡杨峰零食旗舰店", "cover": "https://p9-aio.ecombdimg.com/obj/ecom-shop-material/jpeg_m_305ad4964907deaef67a968709afc8d5_sx_511661_www800-800", "unit_price": 29.93}, {"rank": "18", "title": "康思嘉管道疏通粉强效分解厨房管道油污马桶堵塞地漏除臭去飞虫", "detail_url": "https://haohuo.jinritemai.com/views/product/item2?id=3737643651103326284", "sales": "109万", "commission": "30%赚¥2.97", "cos_ratio": 30, "cos_fee": 297, "shop_name": "康思嘉志行清洁用品专卖店", "cover": "https://p3-aio.ecombdimg.com/obj/ecom-shop-material/jpeg_m_6b13dae0d05a59f5005bcb17dd8387d9_sx_404465_www800-800", "unit_price": 9.9}, {"rank": "19", "title": "【胡杨峰】新疆小无花果干125g*2袋/3袋/4袋", "detail_url": "https://haohuo.jinritemai.com/views/product/item2?id=3814963829880783003", "sales": "2万", "commission": "15%赚¥4.49", "cos_ratio": 15, "cos_fee": 449, "shop_name": "胡杨峰零食旗舰店", "cover": "https://p3-aio.ecombdimg.com/obj/ecom-shop-material/jpeg_m_cc2ece1ad7ed3fa82ae7bb0f99e75791_sx_135062_www800-800", "unit_price": 29.93}, {"rank": "20", "title": "BEINGMATE/贝因美电热蚊香液家用插电驱蚊液无烟无味无避蚊胺温和", "detail_url": "https://haohuo.jinritemai.com/views/product/item2?id=3739307347462455759", "sales": "52万", "commission": "30%赚¥2.97", "cos_ratio": 30, "cos_fee": 297, "shop_name": "贝因美家居清洁旗舰店", "cover": "https://p9-aio.ecombdimg.com/obj/ecom-shop-material/jpeg_m_514ab188e1d21fb6f7f7669cd4f7ab24_sx_269842_www800-800", "unit_price": 9.9}];
-</script>
-<script>
-function parseSalesInt(s) { return parseInt(String(s).replace('万','0000')) || 0; }
-function parseRate(d) { return d.cos_ratio || 0; }
+var allDates = {};
+var availableDates = [];
+var currentIndex = 0;
+var salesChart = null;
+var commissionChart = null;
 
-// Stats
-var totalSales = rawData.reduce(function(s,i){return s+parseSalesInt(i.sales)},0);
-var avgRate = (rawData.reduce(function(s,i){return s+parseRate(i)},0) / rawData.length).toFixed(1);
-var maxEarn = (Math.max.apply(null, rawData.map(function(i){return (i.cos_fee||0)/100}))).toFixed(2);
-var topTitle = rawData[0].title.substring(0, 16) + '...';
+function parseSalesInt(s) { return parseInt(String(s||'0').replace('万','0000')) || 0; }
 
-document.getElementById('totalSales').textContent = (totalSales >= 100000000) ? (totalSales/100000000).toFixed(1)+'亿' : (totalSales/10000).toFixed(0)+'万';
-document.getElementById('avgCommission').textContent = avgRate + '%';
-document.getElementById('maxEarn').textContent = '¥' + maxEarn;
-document.getElementById('topProduct').textContent = topTitle;
-
-// Table
-var tbody = document.getElementById('tableBody');
-rawData.forEach(function(item, i) {
-  var tr = document.createElement('tr');
-  var rankClass = i < 3 ? ' rank-'+(i+1) : '';
-  var commClass = item.cos_ratio >= 20 ? ' commission-high' : '';
-  var salesNum = parseSalesInt(item.sales);
-  var salesDisplay = salesNum >= 10000 ? Math.floor(salesNum/10000)+'万' : String(salesNum);
-  tr.innerHTML =
-    '<td class=\"rank'+rankClass+'\">'+item.rank+'</td>'+
-    '<td class=\"product-cell\">'+
-      '<a class=\"product-link\" href=\"'+item.detail_url+'\" target=\"_blank\" title=\"点击跳转商品详情\">'+item.title+'</a>'+
-      '<div class=\"shop-name\">'+item.shop_name+'</div>'+
-          '<div class=\"unit-price\">客单价 ¥'+(item.unit_price||0).toFixed(2)+'</div>'+
-    '</td>'+
-    '<td class=\"sales\">'+salesDisplay+'</td>'+
-    '<td class=\"commission'+commClass+'\">'+item.cos_ratio+'%赚¥'+((item.cos_fee||0)/100).toFixed(2)+'</td>';
-  tbody.appendChild(tr);
-});
-
-// Charts
-var top10 = rawData.slice(0, 10);
-new Chart(document.getElementById('salesChart'), {
-  type: 'bar',
-  data: {
-    labels: top10.map(function(i){return '#'+i.rank}),
-    datasets: [{
-      label: '昨日销量(万)',
-      data: top10.map(function(i){return parseSalesInt(i.sales)/10000}),
-      backgroundColor: top10.map(function(_,i){return i<3?'rgba(255,215,0,0.8)':'rgba(78,205,196,0.5)'}),
-      borderColor: top10.map(function(_,i){return i<3?'#ffd700':'#4ecdc4'}),
-      borderWidth: 1, borderRadius: 4,
-    }]
-  },
-  options: {
-    responsive: true,
-    plugins: { legend: { display: false } },
-    scales: {
-      y: { grid: { color: 'rgba(255,255,255,0.05)' }, ticks: { color: '#889' } },
-      x: { ticks: { color: '#889' } }
+function loadDateList() {
+  fetch('data/all.json').then(function(r){return r.json()}).then(function(all) {
+    allDates = all;
+    availableDates = Object.keys(all).sort();
+    if (availableDates.length > 0) {
+      currentIndex = availableDates.length - 1;
+      renderDate(availableDates[currentIndex]);
     }
-  }
-});
+    updateNavButtons();
+  }).catch(function() {
+    document.getElementById('tableBody').innerHTML = '<tr><td colspan="4" class="no-data">数据加载失败</td></tr>';
+  });
+}
 
-new Chart(document.getElementById('commissionChart'), {
-  type: 'line',
-  data: {
-    labels: top10.map(function(i){return '#'+i.rank}),
-    datasets: [{
-      label: '佣金率 %',
-      data: top10.map(function(i){return parseRate(i)}),
-      borderColor: '#ff6b6b',
-      backgroundColor: 'rgba(255,107,107,0.1)',
-      fill: true, tension: 0.4,
-      pointBackgroundColor: '#ff6b6b',
-      pointRadius: 5,
-    }]
-  },
-  options: {
-    responsive: true,
-    plugins: { legend: { display: false } },
-    scales: {
-      y: { grid: { color: 'rgba(255,255,255,0.05)' }, ticks: { color: '#889', callback: function(v){return v+'%'} } },
-      x: { ticks: { color: '#889' } }
-    }
+function updateNavButtons() {
+  document.getElementById('btnPrev').disabled = currentIndex <= 0;
+  document.getElementById('btnNext').disabled = currentIndex >= availableDates.length - 1;
+  if (availableDates.length > 0) {
+    document.getElementById('datePicker').value = availableDates[currentIndex];
   }
-});
+}
+
+function changeDate(delta) {
+  var idx = currentIndex + delta;
+  if (idx >= 0 && idx < availableDates.length) {
+    currentIndex = idx;
+    renderDate(availableDates[currentIndex]);
+    updateNavButtons();
+  }
+}
+
+function jumpToDate(dateStr) {
+  var idx = availableDates.indexOf(dateStr);
+  if (idx >= 0) { currentIndex = idx; renderDate(dateStr); updateNavButtons(); }
+  else { alert('该日期暂无数据'); }
+}
+
+function renderDate(dateStr) {
+  var rec = allDates[dateStr];
+  if (!rec) return;
+  var data = rec.products || [];
+  document.getElementById('dateDisplay').textContent = rec.title || dateStr;
+  document.getElementById('currentDate').textContent = dateStr;
+
+  var totalSales = data.reduce(function(s,i){return s+parseSalesInt(i.sales)},0);
+  var avgRate = (data.reduce(function(s,i){return s+(i.cos_ratio||0)},0) / Math.max(data.length,1)).toFixed(1);
+  var maxEarn = (Math.max.apply(null, data.map(function(i){return (i.cos_fee||0)/100}))).toFixed(2);
+  var topTitle = data.length > 0 ? data[0].title.substring(0,16)+'...' : '--';
+
+  document.getElementById('totalSales').textContent = totalSales >= 10000 ? Math.floor(totalSales/10000)+'万' : String(totalSales);
+  document.getElementById('avgCommission').textContent = avgRate+'%';
+  document.getElementById('maxEarn').textContent = '¥'+maxEarn;
+  document.getElementById('topProduct').textContent = topTitle;
+
+  var tbody = document.getElementById('tableBody');
+  tbody.innerHTML = '';
+  data.forEach(function(item, i) {
+    var tr = document.createElement('tr');
+    var rankClass = i < 3 ? ' rank-'+(i+1) : '';
+    var commClass = (item.cos_ratio||0) >= 20 ? ' commission-high' : '';
+    var salesNum = parseSalesInt(item.sales);
+    var salesDisplay = salesNum >= 10000 ? Math.floor(salesNum/10000)+'万' : String(salesNum);
+    tr.innerHTML =
+      '<td class="rank'+rankClass+'">'+(i+1)+'</td>'+
+      '<td>'+
+        '<a class="product-link" href="'+item.detail_url+'" target="_blank" title="点击跳转商品详情">'+item.title+'</a>'+
+        '<div class="shop-name">'+item.shop_name+'</div>'+
+        '<div class="unit-price">客单价 ¥'+(item.unit_price||0).toFixed(2)+'</div>'+
+      '</td>'+
+      '<td class="sales">'+salesDisplay+'</td>'+
+      '<td class="commission'+commClass+'">'+(item.commission||(item.cos_ratio+'%赚¥'+((item.cos_fee||0)/100).toFixed(2)))+'</td>';
+    tbody.appendChild(tr);
+  });
+
+  var top10 = data.slice(0,10);
+  if (salesChart) salesChart.destroy();
+  if (commissionChart) commissionChart.destroy();
+
+  salesChart = new Chart(document.getElementById('salesChart').getContext('2d'), {
+    type: 'bar',
+    data: {
+      labels: top10.map(function(_,i){return '#'+(i+1)}),
+      datasets: [{data: top10.map(function(i){return parseSalesInt(i.sales)/10000}), backgroundColor: top10.map(function(_,i){return i<3?'rgba(255,215,0,0.8)':'rgba(78,205,196,0.5)'}), borderColor: top10.map(function(_,i){return i<3?'#ffd700':'#4ecdc4'}), borderWidth:1, borderRadius:4}]
+    },
+    options: {responsive:true, plugins:{legend:{display:false}}, scales:{y:{grid:{color:'rgba(255,255,255,0.05)'},ticks:{color:'#889'}},x:{ticks:{color:'#889'}}}}
+  });
+  commissionChart = new Chart(document.getElementById('commissionChart').getContext('2d'), {
+    type: 'line',
+    data: {
+      labels: top10.map(function(_,i){return '#'+(i+1)}),
+      datasets: [{data: top10.map(function(i){return i.cos_ratio||0}), borderColor:'#ff6b6b', backgroundColor:'rgba(255,107,107,0.1)', fill:true, tension:0.4, pointBackgroundColor:'#ff6b6b', pointRadius:5}]
+    },
+    options: {responsive:true, plugins:{legend:{display:false}}, scales:{y:{grid:{color:'rgba(255,255,255,0.05)'},ticks:{color:'#889', callback:function(v){return v+'%'}}},x:{ticks:{color:'#889'}}}}
+  });
+}
+
+loadDateList();
 </script>
 </body>
 </html>
