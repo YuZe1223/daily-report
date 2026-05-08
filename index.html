@@ -8,77 +8,99 @@
 <script src="https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.min.js"></script>
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
-body{font-family:-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei',sans-serif;background:#08080f;color:#e0e0e0;overflow-x:hidden;-webkit-tap-highlight-color:transparent}
+body{font-family:-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei',sans-serif;background:#06060e;color:#d4d4e0;overflow-x:hidden;-webkit-tap-highlight-color:transparent}
 #bg-canvas{position:fixed;top:0;left:0;width:100%;height:100%;z-index:0;pointer-events:none}
 .container{position:relative;z-index:1;max-width:1100px;margin:0 auto;padding:16px}
-.header{text-align:center;padding:28px 16px 22px;background:linear-gradient(135deg,rgba(20,15,40,.92),rgba(18,20,55,.92),rgba(10,30,60,.92));border-radius:20px;margin-bottom:20px;border:1px solid rgba(255,215,0,.12);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px)}
-.header h1{font-size:clamp(18px,4vw,28px);color:#ffd700;margin-bottom:6px;letter-spacing:1px;text-shadow:0 0 30px rgba(255,215,0,.3)}
-.header .date{color:#ff6b6b;font-size:14px;margin-top:4px}
-.header .sub{color:#667;font-size:12px;margin-top:2px}
+
+.header{text-align:center;padding:30px 16px 24px;background:linear-gradient(160deg,rgba(25,18,50,.94) 0%,rgba(15,22,55,.94) 50%,rgba(8,28,50,.94) 100%);border-radius:20px;margin-bottom:20px;border:1px solid rgba(255,215,0,.15);border-bottom:2px solid rgba(255,215,0,.2);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);position:relative;overflow:hidden}
+.header::before{content:'';position:absolute;top:-50%;left:-50%;width:200%;height:200%;background:radial-gradient(circle at 30% 20%,rgba(255,215,0,.06) 0%,transparent 50%),radial-gradient(circle at 70% 80%,rgba(255,107,107,.04) 0%,transparent 50%);pointer-events:none}
+.header h1{font-size:clamp(18px,4vw,28px);background:linear-gradient(135deg,#ffe680 0%,#ffd700 30%,#f0a500 70%,#e08900 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin-bottom:6px;letter-spacing:2px;font-weight:800;text-shadow:none;filter:drop-shadow(0 0 20px rgba(255,215,0,.25))}
+.header .date{color:#ff8a80;font-size:15px;margin-top:6px;font-weight:600;letter-spacing:1px}
+.header .sub{color:#8899aa;font-size:12px;margin-top:4px;font-weight:400}
+
 .date-nav{display:flex;justify-content:center;align-items:center;gap:10px;margin-bottom:20px;flex-wrap:wrap}
-.date-nav button{background:rgba(20,18,40,.85);color:#ffd700;border:1px solid rgba(255,215,0,.25);padding:10px 18px;border-radius:25px;cursor:pointer;font-size:14px;transition:all .25s;backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);min-height:44px}
-.date-nav button:hover{background:rgba(255,215,0,.12);border-color:#ffd700;box-shadow:0 0 20px rgba(255,215,0,.15)}
-.date-nav button:disabled{color:#444;border-color:rgba(255,255,255,.08);cursor:not-allowed;box-shadow:none;background:rgba(20,18,40,.5)}
-.date-nav .current-date{font-size:clamp(15px,3vw,18px);font-weight:bold;color:#fff;min-width:110px;text-align:center}
-.date-nav input[type=date]{background:rgba(20,18,40,.85);color:#fff;border:1px solid rgba(255,215,0,.25);padding:8px 14px;border-radius:25px;font-size:14px;backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);min-height:44px}
-.date-nav input[type=date]::-webkit-calendar-picker-indicator{filter:invert(1)}
+.date-nav button{background:rgba(22,20,45,.88);color:#ffd700;border:1px solid rgba(255,215,0,.2);padding:10px 18px;border-radius:25px;cursor:pointer;font-size:14px;font-weight:600;transition:all .25s;backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);min-height:44px;letter-spacing:.5px}
+.date-nav button:hover{background:rgba(255,215,0,.15);border-color:#ffd700;box-shadow:0 0 24px rgba(255,215,0,.2);transform:translateY(-1px)}
+.date-nav button:disabled{color:#3a3a50;border-color:rgba(255,255,255,.06);cursor:not-allowed;box-shadow:none;background:rgba(18,16,38,.4);transform:none}
+.date-nav .current-date{font-size:clamp(15px,3vw,18px);font-weight:700;background:linear-gradient(180deg,#ffffff,#c0c0d0);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;min-width:110px;text-align:center}
+.date-nav input[type=date]{background:rgba(22,20,45,.88);color:#e0e0f0;border:1px solid rgba(255,215,0,.2);padding:8px 14px;border-radius:25px;font-size:14px;backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);min-height:44px;font-weight:500}
+.date-nav input[type=date]::-webkit-calendar-picker-indicator{filter:invert(.85)}
+
 .stats-row{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:20px}
-.stat-card{background:rgba(18,16,38,.85);border-radius:16px;padding:18px 12px;text-align:center;border:1px solid rgba(255,215,0,.1);backdrop-filter:blur(15px);-webkit-backdrop-filter:blur(15px);transition:all .3s}
-.stat-card:hover{border-color:rgba(255,215,0,.3);transform:translateY(-2px);box-shadow:0 8px 30px rgba(0,0,0,.3)}
-.stat-card .value{font-size:clamp(20px,3.5vw,30px);font-weight:bold;background:linear-gradient(135deg,#ffd700,#ffaa00);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
-.stat-card .label{font-size:11px;color:#778;margin-top:4px}
+.stat-card{background:rgba(18,16,38,.85);border-radius:16px;padding:20px 12px;text-align:center;border:1px solid rgba(255,255,255,.06);backdrop-filter:blur(15px);-webkit-backdrop-filter:blur(15px);transition:all .3s;position:relative;overflow:hidden}
+.stat-card:nth-child(1){border-top:2px solid #ffd700}
+.stat-card:nth-child(2){border-top:2px solid #4ecdc4}
+.stat-card:nth-child(3){border-top:2px solid #ff6b6b}
+.stat-card:nth-child(4){border-top:2px solid #a78bfa}
+.stat-card:hover{transform:translateY(-2px);box-shadow:0 12px 40px rgba(0,0,0,.35)}
+.stat-card .value{font-size:clamp(20px,3.5vw,30px);font-weight:800;margin-bottom:2px}
+.stat-card:nth-child(1) .value{background:linear-gradient(135deg,#ffd700,#ffb300);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.stat-card:nth-child(2) .value{background:linear-gradient(135deg,#4ecdc4,#26a69a);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.stat-card:nth-child(3) .value{background:linear-gradient(135deg,#ff6b6b,#ef5350);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.stat-card:nth-child(4) .value{background:linear-gradient(135deg,#a78bfa,#7c4dff);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.stat-card .label{font-size:11px;color:#8899aa;margin-top:4px;font-weight:500;letter-spacing:.5px;text-transform:uppercase}
+
 .charts-row{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin:20px 0}
-.chart-box{background:rgba(18,16,38,.85);border-radius:16px;padding:16px;border:1px solid rgba(255,215,0,.08);backdrop-filter:blur(15px);-webkit-backdrop-filter:blur(15px)}
-.chart-box h3{color:#ffd700;font-size:14px;margin-bottom:12px;padding-left:8px;border-left:3px solid #ffd700}
+.chart-box{background:rgba(18,16,38,.85);border-radius:16px;padding:18px;border:1px solid rgba(255,255,255,.05);backdrop-filter:blur(15px);-webkit-backdrop-filter:blur(15px)}
+.chart-box:nth-child(1){border-left:2px solid rgba(255,215,0,.4)}
+.chart-box:nth-child(2){border-left:2px solid rgba(255,107,107,.4)}
+.chart-box h3{color:#c4c4d8;font-size:14px;margin-bottom:12px;padding-left:8px;border-left:3px solid #ffd700;font-weight:600;letter-spacing:.5px}
 .chart-box canvas{max-height:260px}
-.section-title{font-size:clamp(16px,3vw,20px);color:#ffd700;margin:20px 0 12px;padding-left:12px;border-left:4px solid #ffd700;text-shadow:0 0 20px rgba(255,215,0,.3)}
-.table-wrap{background:rgba(18,16,38,.85);border-radius:16px;overflow:hidden;border:1px solid rgba(255,215,0,.08);backdrop-filter:blur(15px);-webkit-backdrop-filter:blur(15px);-webkit-overflow-scrolling:touch}
+
+.section-title{font-size:clamp(16px,3vw,20px);background:linear-gradient(90deg,#ffd700,#ffb300);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin:20px 0 12px;padding-left:12px;border-left:4px solid #ffd700;font-weight:700;letter-spacing:1px}
+
+.table-wrap{background:rgba(18,16,38,.88);border-radius:16px;overflow:hidden;border:1px solid rgba(255,255,255,.05);backdrop-filter:blur(15px);-webkit-backdrop-filter:blur(15px);-webkit-overflow-scrolling:touch}
 .table-scroll{overflow-x:auto}
 table{width:100%;border-collapse:collapse;min-width:600px}
-thead th{background:rgba(20,18,50,.95);color:#ffd700;padding:12px 14px;text-align:left;font-size:13px;position:sticky;top:0;z-index:2}
-tbody td{padding:10px 14px;font-size:13px;border-bottom:1px solid rgba(255,255,255,.04)}
+thead th{background:linear-gradient(180deg,rgba(25,22,55,.98),rgba(20,18,45,.98));color:#ffd700;padding:12px 14px;text-align:left;font-size:12px;position:sticky;top:0;z-index:2;font-weight:700;letter-spacing:1px;text-transform:uppercase;border-bottom:2px solid rgba(255,215,0,.3)}
+tbody td{padding:10px 14px;font-size:13px;border-bottom:1px solid rgba(255,255,255,.03);color:#c8c8d8}
 tbody tr{transition:all .2s}
-tbody tr:hover{background:rgba(255,215,0,.04)}
-.rank{font-weight:bold;font-size:15px;text-align:center;width:44px}
+tbody tr:nth-child(even){background:rgba(255,255,255,.015)}
+tbody tr:hover{background:rgba(255,215,0,.05)}
+tbody tr:hover td{color:#f0f0f8}
+.rank{font-weight:800;font-size:15px;text-align:center;width:44px}
 .rank-1{color:#ffd700;text-shadow:0 0 12px rgba(255,215,0,.5)}
-.rank-2{color:#c0c0c0;text-shadow:0 0 8px rgba(192,192,192,.4)}
-.rank-3{color:#cd7f32;text-shadow:0 0 8px rgba(205,127,50,.4)}
-.product-link{color:#4ecdc4;text-decoration:none;display:block;max-width:280px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;transition:all .2s}
-.product-link:hover{color:#ffd700}
-.shop-name{font-size:11px;color:#556;margin-top:2px}
-.unit-price{font-size:11px;color:#ffd700;margin-top:1px;opacity:.8}
-.sales{font-weight:bold;color:#ff6b6b;white-space:nowrap}
-.commission{color:#4ecdc4;font-weight:bold;white-space:nowrap;font-size:12px}
-.commission-high{color:#ffd700}
-.no-data{text-align:center;padding:60px;color:#555;font-size:16px}
-.footer{text-align:center;padding:24px;color:#445;font-size:11px}
-.glow{animation:pulse 2s ease-in-out infinite}
-@keyframes pulse{0%,100%{opacity:.6}50%{opacity:1}}
+.rank-2{color:#d0d0e0;text-shadow:0 0 8px rgba(200,200,220,.4)}
+.rank-3{color:#e0a060;text-shadow:0 0 8px rgba(224,160,96,.4)}
+
+.product-link{color:#5eeadb;text-decoration:none;display:block;max-width:280px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;transition:all .2s;font-weight:500}
+.product-link:hover{color:#ffd700;text-shadow:0 0 12px rgba(255,215,0,.3)}
+
+.shop-name{font-size:11px;color:#667788;margin-top:3px;font-weight:400}
+.unit-price{font-size:11px;color:#ffd700;margin-top:1px;opacity:.85;font-weight:500}
+
+.sales{font-weight:700;color:#ff8a80;white-space:nowrap;font-size:13px}
+.commission{color:#5eeadb;font-weight:700;white-space:nowrap;font-size:12px}
+.commission-high{color:#ffd700;text-shadow:0 0 8px rgba(255,215,0,.3)}
+
+.no-data{text-align:center;padding:60px;color:#556;font-size:16px}
+.footer{text-align:center;padding:24px;color:#4a5568;font-size:11px;font-weight:400;letter-spacing:.5px}
+
 @media(max-width:768px){
   .container{padding:10px}
-  .header{padding:20px 12px 16px;border-radius:14px;margin-bottom:14px}
+  .header{padding:22px 12px 18px;border-radius:14px;margin-bottom:14px}
   .header h1{font-size:17px}
   .stats-row{grid-template-columns:repeat(2,1fr);gap:8px}
-  .stat-card{padding:14px 8px;border-radius:12px}
+  .stat-card{padding:16px 8px;border-radius:12px}
   .stat-card .value{font-size:22px}
   .charts-row{grid-template-columns:1fr}
-  .chart-box canvas{max-height:220px}
+  .chart-box canvas{max-height:200px}
   .date-nav{gap:6px}
   .date-nav button{padding:8px 12px;font-size:12px;min-height:40px}
   .date-nav input[type=date]{padding:6px 10px;font-size:12px;min-height:40px}
-  .product-link{max-width:160px;font-size:12px}
-  tbody td{padding:8px 8px;font-size:12px}
-  thead th{padding:8px 8px;font-size:11px}
-  .table-scroll table{min-width:480px}
+  .product-link{max-width:150px;font-size:12px}
+  tbody td{padding:8px 8px;font-size:11px}
+  thead th{padding:8px 8px;font-size:10px}
+  .table-scroll table{min-width:460px}
   .section-title{margin:14px 0 8px}
 }
 @media(max-width:400px){
   .stats-row{grid-template-columns:repeat(2,1fr);gap:6px}
-  .stat-card{padding:10px 6px}
+  .stat-card{padding:12px 6px}
   .stat-card .value{font-size:18px}
   .stat-card .label{font-size:10px}
   .date-nav button{padding:6px 10px;font-size:11px}
-  .product-link{max-width:110px}
+  .product-link{max-width:100px}
 }
 </style>
 </head>
