@@ -4,8 +4,11 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <title>抖音直播带货 · 爆款榜日报</title>
-<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.min.js"></script>
+<script src="https://cdn.bootcdn.net/ajax/libs/Chart.js/4.4.0/chart.umd.min.js" onerror="this.onerror=null;this.src='https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js'"></script>
+<script>
+window._threeReady=false;
+</script>
+<script src="https://unpkg.com/three@0.160.0/build/three.min.js" onerror="this.onerror=null;this.src='https://registry.npmmirror.com/three/0.160.0/files/build/three.min.js'" onload="window._threeReady=true"></script>
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
 body{font-family:-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei',sans-serif;background:#06060e;color:#d4d4e0;overflow-x:hidden;-webkit-tap-highlight-color:transparent}
@@ -145,8 +148,8 @@ tbody tr:hover td{color:#f0f0f8}
 </div>
 
 <script>
-// === Three.js 3D Background ===
-(function(){
+// === Three.js 3D Background (optional, degrades gracefully) ===
+(function(){if(typeof THREE==='undefined'){document.getElementById('bg-canvas').style.display='none';return}
   var canvas=document.getElementById('bg-canvas');
   var renderer=new THREE.WebGLRenderer({canvas:canvas,antialias:true,alpha:true});
   renderer.setPixelRatio(Math.min(window.devicePixelRatio,2));
