@@ -4,232 +4,187 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <title>抖音直播带货 · 爆款榜日报</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 <script src="https://cdn.bootcdn.net/ajax/libs/Chart.js/4.4.0/chart.umd.min.js" onerror="this.onerror=null;this.src='https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js'"></script>
-<script>
-window._threeReady=false;
-</script>
-<script src="https://unpkg.com/three@0.160.0/build/three.min.js" onerror="this.onerror=null;this.src='https://registry.npmmirror.com/three/0.160.0/files/build/three.min.js'" onload="window._threeReady=true"></script>
 <style>
+:root {
+  --primary: #fa520f;
+  --primary-deep: #cc3a05;
+  --sunshine-300: #ffd06a;
+  --sunshine-500: #ffb83e;
+  --sunshine-700: #ffa110;
+  --sunshine-900: #ff8a00;
+  --yellow-saturated: #ffd900;
+  --cream: #fff8e0;
+  --cream-soft: #fffaeb;
+  --cream-deeper: #fff0c2;
+  --beige-deep: #e6d5a8;
+  --ink: #1f1f1f;
+  --ink-tint: #3d3d3d;
+  --charcoal: #2c2c2c;
+  --slate: #4a4a4a;
+  --steel: #6a6a6a;
+  --stone: #8a8a8a;
+  --muted: #a8a8a8;
+  --hairline: #e5e5e5;
+  --hairline-soft: #ededed;
+  --hairline-strong: #c7c7c7;
+  --canvas: #ffffff;
+  --surface: #fafafa;
+  --on-primary: #ffffff;
+  --on-dark: #ffffff;
+  --on-dark-muted: #a8a8a8;
+  --on-cream: #1f1f1f;
+  --link: #fa520f;
+  --spacing-xs: 8px;
+  --spacing-sm: 12px;
+  --spacing-md: 16px;
+  --spacing-lg: 20px;
+  --spacing-xl: 24px;
+  --spacing-xxl: 32px;
+  --spacing-xxxl: 40px;
+  --spacing-section: 64px;
+  --rounded-md: 8px;
+  --rounded-lg: 12px;
+  --rounded-xl: 16px;
+  --rounded-full: 9999px;
+}
+
 *{margin:0;padding:0;box-sizing:border-box}
-body{font-family:-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei',sans-serif;background:#06060e;color:#d4d4e0;overflow-x:hidden;-webkit-tap-highlight-color:transparent}
-#bg-canvas{position:fixed;top:0;left:0;width:100%;height:100%;z-index:0;pointer-events:none}
-.container{position:relative;z-index:1;max-width:1100px;margin:0 auto;padding:16px}
+body{font-family:'Inter',-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei',sans-serif;background:var(--canvas);color:var(--ink);overflow-x:hidden;-webkit-tap-highlight-color:transparent;-webkit-font-smoothing:antialiased}
+.container{max-width:1120px;margin:0 auto;padding:0 var(--spacing-md)}
 
-.header{text-align:center;padding:30px 16px 24px;background:linear-gradient(160deg,rgba(25,18,50,.94) 0%,rgba(15,22,55,.94) 50%,rgba(8,28,50,.94) 100%);border-radius:20px;margin-bottom:20px;border:1px solid rgba(255,215,0,.15);border-bottom:2px solid rgba(255,215,0,.2);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);position:relative;overflow:hidden}
-.header::before{content:'';position:absolute;top:-50%;left:-50%;width:200%;height:200%;background:radial-gradient(circle at 30% 20%,rgba(255,215,0,.06) 0%,transparent 50%),radial-gradient(circle at 70% 80%,rgba(255,107,107,.04) 0%,transparent 50%);pointer-events:none}
-.header h1{font-size:clamp(18px,4vw,28px);background:linear-gradient(135deg,#ffe680 0%,#ffd700 30%,#f0a500 70%,#e08900 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin-bottom:6px;letter-spacing:2px;font-weight:800;text-shadow:none;filter:drop-shadow(0 0 20px rgba(255,215,0,.25))}
-.header .date{color:#ff8a80;font-size:15px;margin-top:6px;font-weight:600;letter-spacing:1px}
-.header .sub{color:#8899aa;font-size:12px;margin-top:4px;font-weight:400}
+/* ── Hero band ── */
+.hero-band{background:linear-gradient(160deg,var(--sunshine-500) 0%,var(--sunshine-700) 35%,var(--sunshine-900) 65%,var(--primary) 100%);padding:var(--spacing-xxxl) var(--spacing-md) var(--spacing-xxl);text-align:center;margin-bottom:var(--spacing-xxl);position:relative;overflow:hidden}
+.hero-band::after{content:'';position:absolute;bottom:0;left:0;right:0;height:4px;background:linear-gradient(90deg,var(--primary),var(--sunshine-700),var(--yellow-saturated),var(--cream))}
+.hero-band h1{font-size:clamp(28px,5vw,48px);font-weight:700;color:var(--ink);letter-spacing:-0.5px;margin-bottom:var(--spacing-xs);line-height:1.15}
+.hero-band .date{font-size:15px;color:var(--ink-tint);font-weight:500}
+.hero-band .sub{font-size:13px;color:var(--ink-tint);margin-top:4px;opacity:.8}
 
-.date-nav{display:flex;justify-content:center;align-items:center;gap:10px;margin-bottom:20px;flex-wrap:wrap}
-.date-nav button{background:rgba(22,20,45,.88);color:#ffd700;border:1px solid rgba(255,215,0,.2);padding:10px 18px;border-radius:25px;cursor:pointer;font-size:14px;font-weight:600;transition:all .25s;backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);min-height:44px;letter-spacing:.5px}
-.date-nav button:hover{background:rgba(255,215,0,.15);border-color:#ffd700;box-shadow:0 0 24px rgba(255,215,0,.2);transform:translateY(-1px)}
-.date-nav button:disabled{color:#3a3a50;border-color:rgba(255,255,255,.06);cursor:not-allowed;box-shadow:none;background:rgba(18,16,38,.4);transform:none}
-.date-nav .current-date{font-size:clamp(15px,3vw,18px);font-weight:700;background:linear-gradient(180deg,#ffffff,#c0c0d0);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;min-width:110px;text-align:center}
-.date-nav input[type=date]{background:rgba(22,20,45,.88);color:#e0e0f0;border:1px solid rgba(255,215,0,.2);padding:8px 14px;border-radius:25px;font-size:14px;backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);min-height:44px;font-weight:500}
-.date-nav input[type=date]::-webkit-calendar-picker-indicator{filter:invert(.85)}
+/* ── Date nav ── */
+.date-nav{display:flex;justify-content:center;align-items:center;gap:var(--spacing-sm);margin-bottom:var(--spacing-xxl);flex-wrap:wrap}
+.date-nav button{font-family:'Inter',sans-serif;font-size:14px;font-weight:500;padding:10px 20px;border-radius:var(--rounded-md);cursor:pointer;transition:all .15s;min-height:44px;line-height:1.3;background:var(--canvas);color:var(--ink);border:1px solid var(--hairline-strong)}
+.date-nav button:active{background:var(--surface)}
+.date-nav button:disabled{color:var(--muted);border-color:var(--hairline);cursor:not-allowed;opacity:.5}
+.date-nav .current-date{font-size:17px;font-weight:600;color:var(--ink);min-width:120px;text-align:center}
+.date-nav input[type=date]{font-family:'Inter',sans-serif;font-size:14px;font-weight:500;padding:10px 16px;border-radius:var(--rounded-md);border:1px solid var(--hairline-strong);background:var(--canvas);color:var(--ink);min-height:44px;line-height:1.3}
+.date-nav input[type=date]::-webkit-calendar-picker-indicator{cursor:pointer}
 
-.stats-row{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:20px}
-.stat-card{background:rgba(18,16,38,.85);border-radius:16px;padding:20px 12px;text-align:center;border:1px solid rgba(255,255,255,.06);backdrop-filter:blur(15px);-webkit-backdrop-filter:blur(15px);transition:all .3s;position:relative;overflow:hidden}
-.stat-card:nth-child(1){border-top:2px solid #ffd700}
-.stat-card:nth-child(2){border-top:2px solid #4ecdc4}
-.stat-card:nth-child(3){border-top:2px solid #ff6b6b}
-.stat-card:nth-child(4){border-top:2px solid #a78bfa}
-.stat-card:hover{transform:translateY(-2px);box-shadow:0 12px 40px rgba(0,0,0,.35)}
-.stat-card .value{font-size:clamp(20px,3.5vw,30px);font-weight:800;margin-bottom:2px}
-.stat-card:nth-child(1) .value{background:linear-gradient(135deg,#ffd700,#ffb300);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
-.stat-card:nth-child(2) .value{background:linear-gradient(135deg,#4ecdc4,#26a69a);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
-.stat-card:nth-child(3) .value{background:linear-gradient(135deg,#ff6b6b,#ef5350);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
-.stat-card:nth-child(4) .value{background:linear-gradient(135deg,#a78bfa,#7c4dff);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
-.stat-card .label{font-size:11px;color:#8899aa;margin-top:4px;font-weight:500;letter-spacing:.5px;text-transform:uppercase}
+/* ── Stats row ── */
+.stats-row{display:grid;grid-template-columns:repeat(4,1fr);gap:var(--spacing-md);margin-bottom:var(--spacing-xxl)}
+.stat-card{background:var(--cream);border-radius:var(--rounded-lg);padding:var(--spacing-xl);text-align:center;border:1px solid var(--beige-deep)}
+.stat-card .value{font-size:clamp(24px,4vw,36px);font-weight:700;color:var(--primary);line-height:1.2;margin-bottom:4px}
+.stat-card .label{font-size:12px;font-weight:500;color:var(--steel);text-transform:uppercase;letter-spacing:.5px}
 
-.charts-row{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin:20px 0}
-.chart-box{background:rgba(18,16,38,.85);border-radius:16px;padding:18px;border:1px solid rgba(255,255,255,.05);backdrop-filter:blur(15px);-webkit-backdrop-filter:blur(15px)}
-.chart-box:nth-child(1){border-left:2px solid rgba(255,215,0,.4)}
-.chart-box:nth-child(2){border-left:2px solid rgba(255,107,107,.4)}
-.chart-box h3{color:#c4c4d8;font-size:14px;margin-bottom:12px;padding-left:8px;border-left:3px solid #ffd700;font-weight:600;letter-spacing:.5px}
+/* ── Charts ── */
+.charts-row{display:grid;grid-template-columns:1fr 1fr;gap:var(--spacing-md);margin-bottom:var(--spacing-xxl)}
+.chart-box{background:var(--canvas);border-radius:var(--rounded-lg);padding:var(--spacing-xl);border:1px solid var(--hairline-soft)}
+.chart-box h3{font-family:'Inter',sans-serif;font-size:16px;font-weight:600;color:var(--ink);margin-bottom:var(--spacing-md);padding-left:var(--spacing-sm);border-left:3px solid var(--primary)}
 .chart-box canvas{max-height:260px}
 
-.section-title{font-size:clamp(16px,3vw,20px);background:linear-gradient(90deg,#ffd700,#ffb300);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin:20px 0 12px;padding-left:12px;border-left:4px solid #ffd700;font-weight:700;letter-spacing:1px}
+/* ── Section title ── */
+.section-title{font-size:clamp(18px,3vw,22px);font-weight:600;color:var(--ink);margin:var(--spacing-xxl) 0 var(--spacing-lg);padding-left:var(--spacing-sm);border-left:4px solid var(--primary);letter-spacing:-.3px}
 
-.table-wrap{background:rgba(18,16,38,.88);border-radius:16px;overflow:hidden;border:1px solid rgba(255,255,255,.05);backdrop-filter:blur(15px);-webkit-backdrop-filter:blur(15px);-webkit-overflow-scrolling:touch}
+/* ── Table ── */
+.table-wrap{background:var(--canvas);border-radius:var(--rounded-lg);overflow:hidden;border:1px solid var(--hairline-soft);-webkit-overflow-scrolling:touch}
 .table-scroll{overflow-x:auto}
-table{width:100%;border-collapse:collapse;min-width:600px}
-thead th{background:linear-gradient(180deg,rgba(25,22,55,.98),rgba(20,18,45,.98));color:#ffd700;padding:12px 14px;text-align:left;font-size:12px;position:sticky;top:0;z-index:2;font-weight:700;letter-spacing:1px;text-transform:uppercase;border-bottom:2px solid rgba(255,215,0,.3)}
-tbody td{padding:10px 14px;font-size:13px;border-bottom:1px solid rgba(255,255,255,.03);color:#c8c8d8}
-tbody tr{transition:all .2s}
-tbody tr:nth-child(even){background:rgba(255,255,255,.015)}
-tbody tr:hover{background:rgba(255,215,0,.05)}
-tbody tr:hover td{color:#f0f0f8}
-.rank{font-weight:800;font-size:15px;text-align:center;width:44px}
-.rank-1{color:#ffd700;text-shadow:0 0 12px rgba(255,215,0,.5)}
-.rank-2{color:#d0d0e0;text-shadow:0 0 8px rgba(200,200,220,.4)}
-.rank-3{color:#e0a060;text-shadow:0 0 8px rgba(224,160,96,.4)}
+table{width:100%;border-collapse:collapse;min-width:620px}
+thead th{background:var(--surface);color:var(--ink);padding:12px 14px;text-align:left;font-size:12px;font-weight:600;text-transform:uppercase;letter-spacing:.5px;border-bottom:2px solid var(--hairline);position:sticky;top:0;z-index:2}
+tbody td{padding:11px 14px;font-size:14px;font-weight:400;border-bottom:1px solid var(--hairline-soft);color:var(--ink);line-height:1.4}
+tbody tr:nth-child(even){background:var(--surface)}
+.rank{font-weight:700;font-size:15px;text-align:center;width:44px;color:var(--steel)}
+.rank-1{color:var(--sunshine-700)}
+.rank-2{color:var(--steel)}
+.rank-3{color:var(--primary)}
+.product-link{color:var(--link);text-decoration:none;display:block;max-width:280px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-weight:500}
+.shop-name{font-size:12px;color:var(--stone);margin-top:2px;font-weight:400}
+.unit-price{font-size:12px;color:var(--primary);margin-top:1px;font-weight:500}
+.sales{font-weight:700;color:var(--ink);white-space:nowrap;font-size:14px}
+.month-sales{color:var(--steel);white-space:nowrap;font-size:13px;font-weight:400}
+.commission{color:var(--primary);font-weight:600;white-space:nowrap;font-size:13px}
+.commission-high{color:var(--sunshine-700);font-weight:700}
+.no-data{text-align:center;padding:60px;color:var(--muted);font-size:16px}
 
-.product-link{color:#5eeadb;text-decoration:none;display:block;max-width:280px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;transition:all .2s;font-weight:500}
-.product-link:hover{color:#ffd700;text-shadow:0 0 12px rgba(255,215,0,.3)}
+/* ── Sunset stripe band ── */
+.sunset-stripe{background:linear-gradient(90deg,var(--primary) 0%,var(--sunshine-700) 25%,var(--sunshine-500) 50%,var(--yellow-saturated) 75%,var(--cream) 100%);height:4px;width:100%;margin-top:var(--spacing-section)}
 
-.shop-name{font-size:11px;color:#667788;margin-top:3px;font-weight:400}
-.unit-price{font-size:11px;color:#ffd700;margin-top:1px;opacity:.85;font-weight:500}
-
-.sales{font-weight:700;color:#ff8a80;white-space:nowrap;font-size:13px}
-.month-sales{color:#7788aa;white-space:nowrap;font-size:12px}
-.commission{color:#5eeadb;font-weight:700;white-space:nowrap;font-size:12px}
-.commission-high{color:#ffd700;text-shadow:0 0 8px rgba(255,215,0,.3)}
-
-.no-data{text-align:center;padding:60px;color:#556;font-size:16px}
-.footer{text-align:center;padding:24px;color:#4a5568;font-size:11px;font-weight:400;letter-spacing:.5px}
+/* ── Footer ── */
+.footer{background:var(--cream);padding:var(--spacing-xxxl) var(--spacing-md);text-align:center;color:var(--steel);font-size:12px;font-weight:400;border-top:1px solid var(--beige-deep)}
+.footer a{color:var(--link);text-decoration:none;font-weight:500}
 
 @media(max-width:768px){
-  .container{padding:10px}
-  .header{padding:22px 12px 18px;border-radius:14px;margin-bottom:14px}
-  .header h1{font-size:17px}
-  .stats-row{grid-template-columns:repeat(2,1fr);gap:8px}
-  .stat-card{padding:16px 8px;border-radius:12px}
-  .stat-card .value{font-size:22px}
+  .container{padding:0 var(--spacing-sm)}
+  .hero-band{padding:var(--spacing-xxl) var(--spacing-sm) var(--spacing-xl)}
+  .stats-row{grid-template-columns:repeat(2,1fr);gap:var(--spacing-sm)}
+  .stat-card{padding:var(--spacing-lg)}
   .charts-row{grid-template-columns:1fr}
   .chart-box canvas{max-height:200px}
-  .date-nav{gap:6px}
-  .date-nav button{padding:8px 12px;font-size:12px;min-height:40px}
-  .date-nav input[type=date]{padding:6px 10px;font-size:12px;min-height:40px}
-  .product-link{max-width:150px;font-size:12px}
-  tbody td{padding:8px 8px;font-size:11px}
-  thead th{padding:8px 8px;font-size:10px}
+  .date-nav button{padding:8px 14px;font-size:13px;min-height:40px}
+  .date-nav input[type=date]{padding:8px 12px;font-size:13px;min-height:40px}
+  .product-link{max-width:140px;font-size:13px}
+  tbody td{padding:8px 8px;font-size:12px}
+  thead th{padding:8px;font-size:10px}
   .table-scroll table{min-width:520px}
-  .section-title{margin:14px 0 8px}
-  .month-sales{font-size:10px}
+  .section-title{margin:var(--spacing-xl) 0 var(--spacing-md)}
 }
 @media(max-width:400px){
   .stats-row{grid-template-columns:repeat(2,1fr);gap:6px}
-  .stat-card{padding:12px 6px}
-  .stat-card .value{font-size:18px}
-  .stat-card .label{font-size:10px}
+  .stat-card{padding:var(--spacing-sm)}
+  .stat-card .value{font-size:20px}
   .date-nav button{padding:6px 10px;font-size:11px}
   .product-link{max-width:100px}
 }
 </style>
 </head>
 <body>
-<canvas id="bg-canvas"></canvas>
+
+<div class="hero-band">
+  <div class="container">
+    <h1>抖音直播带货 · 爆款榜日报</h1>
+    <div class="date" id="dateDisplay">--</div>
+    <div class="sub">巨量百应 · 爆款榜（昨日 / 直播）</div>
+  </div>
+</div>
+
 <div class="container">
+  <div class="date-nav">
+    <button onclick="changeDate(-1)" id="btnPrev">◀ 前一天</button>
+    <span class="current-date" id="currentDate">--</span>
+    <input type="date" id="datePicker" onchange="jumpToDate(this.value)">
+    <button onclick="changeDate(1)" id="btnNext">后一天 ▶</button>
+  </div>
 
-<div class="header">
-  <h1 class="glow">抖音直播带货 · 爆款榜日报</h1>
-  <div class="date" id="dateDisplay">--</div>
-  <div class="sub">巨量百应 · 爆款榜（昨日 / 直播）</div>
+  <div class="stats-row">
+    <div class="stat-card"><div class="value" id="totalSales">--</div><div class="label">昨日总销量</div></div>
+    <div class="stat-card"><div class="value" id="avgCommission">--</div><div class="label">平均佣金率</div></div>
+    <div class="stat-card"><div class="value" id="maxEarn">--</div><div class="label">最高佣金 / 单</div></div>
+    <div class="stat-card"><div class="value" id="topProduct">--</div><div class="label">销量冠军</div></div>
+  </div>
+
+  <div class="charts-row">
+    <div class="chart-box"><h3>Top 10 昨日销量</h3><canvas id="salesChart"></canvas></div>
+    <div class="chart-box"><h3>佣金率对比</h3><canvas id="commissionChart"></canvas></div>
+  </div>
+
+  <h2 class="section-title">完整榜单 Top 20</h2>
+  <div class="table-wrap">
+    <div class="table-scroll">
+      <table><thead><tr><th>排名</th><th>商品 / 店铺</th><th>昨日销量</th><th>月销量</th><th>佣金</th></tr></thead>
+      <tbody id="tableBody"></tbody></table>
+    </div>
+  </div>
 </div>
 
-<div class="date-nav">
-  <button onclick="changeDate(-1)" id="btnPrev">◀ 前一天</button>
-  <span class="current-date" id="currentDate">--</span>
-  <input type="date" id="datePicker" onchange="jumpToDate(this.value)">
-  <button onclick="changeDate(1)" id="btnNext">后一天 ▶</button>
-</div>
-
-<div class="stats-row">
-  <div class="stat-card"><div class="value" id="totalSales">--</div><div class="label">昨日总销量</div></div>
-  <div class="stat-card"><div class="value" id="avgCommission">--</div><div class="label">平均佣金率</div></div>
-  <div class="stat-card"><div class="value" id="maxEarn">--</div><div class="label">最高佣金/单</div></div>
-  <div class="stat-card"><div class="value" id="topProduct">--</div><div class="label">销量冠军</div></div>
-</div>
-
-<div class="charts-row">
-  <div class="chart-box"><h3>Top 10 昨日销量</h3><canvas id="salesChart"></canvas></div>
-  <div class="chart-box"><h3>佣金率对比</h3><canvas id="commissionChart"></canvas></div>
-</div>
-
-<h2 class="section-title">完整榜单 Top 20</h2>
-<div class="table-wrap">
-<div class="table-scroll">
-<table><thead><tr><th>排名</th><th>商品 / 店铺</th><th>昨日销量</th><th>月销量</th><th>佣金</th></tr></thead>
-<tbody id="tableBody"></tbody></table>
-</div>
-</div>
-
-<div class="footer">点击商品名称跳转详情页 · 数据来源: 巨量百应</div>
+<div class="sunset-stripe"></div>
+<div class="footer">
+  点击商品名称跳转详情页 · 数据来源: 巨量百应<br>
+  <a href="https://yh.yuze1.top">yh.yuze1.top</a>
 </div>
 
 <script>
-// === Three.js 3D Background (optional, degrades gracefully) ===
-(function(){if(typeof THREE==='undefined'){document.getElementById('bg-canvas').style.display='none';return}
-  var canvas=document.getElementById('bg-canvas');
-  var renderer=new THREE.WebGLRenderer({canvas:canvas,antialias:true,alpha:true});
-  renderer.setPixelRatio(Math.min(window.devicePixelRatio,2));
-  renderer.setSize(window.innerWidth,window.innerHeight);
-  var scene=new THREE.Scene();
-  var camera=new THREE.PerspectiveCamera(60,window.innerWidth/window.innerHeight,0.1,100);
-  camera.position.z=30;
-
-  // Floating particles
-  var particlesGeo=new THREE.BufferGeometry();
-  var count=window.innerWidth<768?400:800;
-  var positions=new Float32Array(count*3);
-  var colors=new Float32Array(count*3);
-  var gold=new THREE.Color('#ffd700');
-  var cyan=new THREE.Color('#4ecdc4');
-  var pink=new THREE.Color('#ff6b6b');
-  for(var i=0;i<count*3;i+=3){
-    positions[i]=(Math.random()-0.5)*50;
-    positions[i+1]=(Math.random()-0.5)*40;
-    positions[i+2]=(Math.random()-0.5)*20;
-    var mix=Math.random();
-    var c=mix<.6?gold.clone().lerp(cyan,mix/.6):cyan.clone().lerp(pink,(mix-.6)/.4);
-    colors[i]=c.r;colors[i+1]=c.g;colors[i+2]=c.b;
-  }
-  particlesGeo.setAttribute('position',new THREE.BufferAttribute(positions,3));
-  particlesGeo.setAttribute('color',new THREE.BufferAttribute(colors,3));
-  var particlesMat=new THREE.PointsMaterial({size:.12,vertexColors:true,blending:THREE.AdditiveBlending,depthWrite:false,transparent:true,opacity:.8});
-  var particles=new THREE.Points(particlesGeo,particlesMat);
-  scene.add(particles);
-
-  // Floating rings
-  var rings=[];
-  for(var r=0;r<5;r++){
-    var ringGeo=new THREE.TorusGeometry(3+r*2,.02,16,100);
-    var ringMat=new THREE.MeshBasicMaterial({color:new THREE.Color().setHSL(.13+r*.03,.8,.5+r*.05),transparent:true,opacity:.15,blending:THREE.AdditiveBlending,depthWrite:false});
-    var ring=new THREE.Mesh(ringGeo,ringMat);
-    ring.rotation.x=Math.random()*Math.PI;
-    ring.rotation.y=Math.random()*Math.PI;
-    ring.position.set((Math.random()-.5)*20,(Math.random()-.5)*15,(Math.random()-.5)*8-3);
-    ring.userData={speed:.002+r*.001,rotAxis:new THREE.Vector3(Math.random()-.5,Math.random()-.5,Math.random()-.5).normalize()};
-    scene.add(ring);
-    rings.push(ring);
-  }
-
-  // Mouse interaction
-  var mouseX=0,mouseY=0,targetX=0,targetY=0;
-  document.addEventListener('mousemove',function(e){targetX=(e.clientX/window.innerWidth-0.5)*8;targetY=(e.clientY/window.innerHeight-0.5)*6});
-  document.addEventListener('touchmove',function(e){targetX=(e.touches[0].clientX/window.innerWidth-0.5)*8;targetY=(e.touches[0].clientY/window.innerHeight-0.5)*6});
-
-  function animate(){
-    requestAnimationFrame(animate);
-    mouseX+=(targetX-mouseX)*0.03;
-    mouseY+=(targetY-mouseY)*0.03;
-    particles.rotation.y+=.0003;
-    particles.rotation.x+=.0001;
-    particles.position.x+=(mouseX-particles.position.x)*.01;
-    particles.position.y+=(mouseY-particles.position.y)*.01;
-    rings.forEach(function(r){
-      r.rotation.x+=r.userData.speed*r.userData.rotAxis.x;
-      r.rotation.y+=r.userData.speed*r.userData.rotAxis.y;
-      r.rotation.z+=r.userData.speed*r.userData.rotAxis.z;
-    });
-    renderer.render(scene,camera);
-  }
-  animate();
-  window.addEventListener('resize',function(){
-    renderer.setSize(window.innerWidth,window.innerHeight);
-    camera.aspect=window.innerWidth/window.innerHeight;
-    camera.updateProjectionMatrix();
-  });
-})();
-
-// === Data Logic ===
-var allDates={};
-var availableDates=[];
-var currentIndex=0;
-var salesChart=null,commissionChart=null;
-
+var allDates={},availableDates=[],currentIndex=0,salesChart=null,commissionChart=null;
 function parseSalesInt(s){return parseInt(String(s||'0').replace('万','0000'))||0}
 
 function loadDateList(){
@@ -238,7 +193,7 @@ function loadDateList(){
     if(availableDates.length>0){currentIndex=availableDates.length-1;renderDate(availableDates[currentIndex])}
     updateNavButtons();
   }).catch(function(){
-    document.getElementById('tableBody').innerHTML='<tr><td colspan="4" class="no-data">数据加载失败</td></tr>';
+    document.getElementById('tableBody').innerHTML='<tr><td colspan="5" class="no-data">数据加载失败</td></tr>';
   });
 }
 
@@ -263,6 +218,7 @@ function renderDate(dateStr){
   var data=rec.products||[];
   document.getElementById('dateDisplay').textContent=rec.title||dateStr;
   document.getElementById('currentDate').textContent=dateStr;
+
   var ts=data.reduce(function(s,i){return s+parseSalesInt(i.sales)},0);
   var ar=(data.reduce(function(s,i){return s+(i.cos_ratio||0)},0)/Math.max(data.length,1)).toFixed(1);
   var me=(Math.max.apply(null,data.map(function(i){return(i.cos_fee||0)/100}))).toFixed(2);
@@ -271,6 +227,7 @@ function renderDate(dateStr){
   document.getElementById('avgCommission').textContent=ar+'%';
   document.getElementById('maxEarn').textContent='¥'+me;
   document.getElementById('topProduct').textContent=tt;
+
   var tb=document.getElementById('tableBody');tb.innerHTML='';
   data.forEach(function(item,i){
     var tr=document.createElement('tr');
@@ -279,15 +236,18 @@ function renderDate(dateStr){
     var sn=parseSalesInt(item.sales);
     var sd=sn>=10000?Math.floor(sn/10000)+'万':String(sn);
     var ms=(item.month_sales||'').replace(/万.*/,'');
-    var msDisplay=ms?ms+'万':'';
-    tr.innerHTML='<td class="rank'+rc+'">'+(i+1)+'</td><td><a class="product-link" href="'+item.detail_url+'" target="_blank">'+item.title+'</a><div class="shop-name">'+item.shop_name+'</div><div class="unit-price">客单价 ¥'+(item.unit_price||0).toFixed(2)+'</div></td><td class="sales">'+sd+'</td><td class="month-sales">'+msDisplay+'</td><td class="commission'+cc+'">'+(item.commission||(item.cos_ratio+'%赚¥'+((item.cos_fee||0)/100).toFixed(2)))+'</td>';
+    var msd=ms?ms+'万':'';
+    tr.innerHTML='<td class="rank'+rc+'">'+(i+1)+'</td><td><a class="product-link" href="'+item.detail_url+'" target="_blank">'+item.title+'</a><div class="shop-name">'+item.shop_name+'</div><div class="unit-price">客单价 ¥'+(item.unit_price||0).toFixed(2)+'</div></td><td class="sales">'+sd+'</td><td class="month-sales">'+msd+'</td><td class="commission'+cc+'">'+(item.commission||(item.cos_ratio+'%赚¥'+((item.cos_fee||0)/100).toFixed(2)))+'</td>';
     tb.appendChild(tr);
   });
+
   var t10=data.slice(0,10);
   if(salesChart)salesChart.destroy();
   if(commissionChart)commissionChart.destroy();
-  salesChart=new Chart(document.getElementById('salesChart').getContext('2d'),{type:'bar',data:{labels:t10.map(function(_,i){return'#'+(i+1)}),datasets:[{data:t10.map(function(i){return parseSalesInt(i.sales)/10000}),backgroundColor:t10.map(function(_,i){return i<3?'rgba(255,215,0,0.7)':'rgba(78,205,196,0.4)'}),borderColor:t10.map(function(_,i){return i<3?'#ffd700':'#4ecdc4'}),borderWidth:1,borderRadius:6}]},options:{responsive:true,plugins:{legend:{display:false}},scales:{y:{grid:{color:'rgba(255,255,255,0.04)'},ticks:{color:'#889',callback:function(v){return v+'万'}}},x:{grid:{display:false},ticks:{color:'#889'}}}}});
-  commissionChart=new Chart(document.getElementById('commissionChart').getContext('2d'),{type:'line',data:{labels:t10.map(function(_,i){return'#'+(i+1)}),datasets:[{data:t10.map(function(i){return i.cos_ratio||0}),borderColor:'#ff6b6b',backgroundColor:'rgba(255,107,107,0.08)',fill:true,tension:.4,pointBackgroundColor:'#ff6b6b',pointRadius:4,pointHoverRadius:7,borderWidth:2}]},options:{responsive:true,plugins:{legend:{display:false}},scales:{y:{grid:{color:'rgba(255,255,255,0.04)'},ticks:{color:'#889',callback:function(v){return v+'%'}}},x:{grid:{display:false},ticks:{color:'#889'}}}}});
+
+  salesChart=new Chart(document.getElementById('salesChart').getContext('2d'),{type:'bar',data:{labels:t10.map(function(_,i){return'#'+(i+1)}),datasets:[{data:t10.map(function(i){return parseSalesInt(i.sales)/10000}),backgroundColor:['#fa520f','#fa520f','#fa520f','#ffb83e','#ffb83e','#ffb83e','#ffd06a','#ffd06a','#ffd06a','#ffd06a'],borderRadius:6}]},options:{responsive:true,plugins:{legend:{display:false}},scales:{y:{grid:{color:'rgba(0,0,0,0.04)'},ticks:{color:'#6a6a6a',callback:function(v){return v+'万'}}},x:{grid:{display:false},ticks:{color:'#6a6a6a'}}}}});
+
+  commissionChart=new Chart(document.getElementById('commissionChart').getContext('2d'),{type:'line',data:{labels:t10.map(function(_,i){return'#'+(i+1)}),datasets:[{data:t10.map(function(i){return i.cos_ratio||0}),borderColor:'#fa520f',backgroundColor:'rgba(250,82,15,0.06)',fill:true,tension:.4,pointBackgroundColor:'#fa520f',pointRadius:4,pointHoverRadius:7,borderWidth:2}]},options:{responsive:true,plugins:{legend:{display:false}},scales:{y:{grid:{color:'rgba(0,0,0,0.04)'},ticks:{color:'#6a6a6a',callback:function(v){return v+'%'}}},x:{grid:{display:false},ticks:{color:'#6a6a6a'}}}}});
 }
 
 loadDateList();
