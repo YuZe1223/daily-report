@@ -2,59 +2,94 @@
 <html lang="zh-CN">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <title>抖音直播带货 · 爆款榜日报</title>
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.min.js"></script>
 <style>
-* { margin: 0; padding: 0; box-sizing: border-box; }
-body { font-family: -apple-system, BlinkMacSystemFont, 'Microsoft YaHei', sans-serif; background: #0f0f1a; color: #e0e0e0; padding: 20px; }
-.container { max-width: 1200px; margin: 0 auto; }
-.header { text-align: center; padding: 30px 20px; background: linear-gradient(135deg, #1a1a2e, #16213e, #0f3460); border-radius: 16px; margin-bottom: 24px; }
-.header h1 { font-size: 28px; color: #ffd700; margin-bottom: 8px; }
-.header .sub { color: #889; font-size: 14px; }
-.header .date { color: #ff6b6b; font-size: 16px; margin-top: 6px; }
-.date-nav { display: flex; justify-content: center; align-items: center; gap: 16px; margin-bottom: 24px; }
-.date-nav button { background: #1a1a2e; color: #ffd700; border: 1px solid #ffd700; padding: 8px 16px; border-radius: 8px; cursor: pointer; font-size: 14px; transition: all 0.2s; }
-.date-nav button:hover { background: rgba(255,215,0,0.15); }
-.date-nav button:disabled { color: #555; border-color: #444; cursor: not-allowed; }
-.date-nav .current-date { font-size: 18px; font-weight: bold; color: #fff; min-width: 120px; text-align: center; }
-.date-nav input[type="date"] { background: #1a1a2e; color: #fff; border: 1px solid #2a2a4a; padding: 6px 12px; border-radius: 8px; font-size: 14px; }
-.date-nav input[type="date"]::-webkit-calendar-picker-indicator { filter: invert(1); }
-.stats-row { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 16px; margin-bottom: 24px; }
-.stat-card { background: #1a1a2e; border-radius: 12px; padding: 20px; text-align: center; border: 1px solid #2a2a4a; }
-.stat-card .value { font-size: 32px; font-weight: bold; color: #ffd700; }
-.stat-card .label { font-size: 13px; color: #889; margin-top: 4px; }
-.charts-row { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin: 24px 0; }
-.chart-box { background: #1a1a2e; border-radius: 12px; padding: 20px; border: 1px solid #2a2a4a; }
-.chart-box h3 { color: #ffd700; font-size: 15px; margin-bottom: 16px; }
-.chart-box canvas { max-height: 300px; }
-.section-title { font-size: 20px; color: #ffd700; margin: 24px 0 16px; padding-left: 12px; border-left: 3px solid #ffd700; }
-.table-wrap { background: #1a1a2e; border-radius: 12px; overflow: hidden; border: 1px solid #2a2a4a; }
-table { width: 100%; border-collapse: collapse; }
-thead th { background: #16213e; color: #ffd700; padding: 12px 16px; text-align: left; font-size: 13px; }
-tbody td { padding: 10px 16px; font-size: 13px; border-bottom: 1px solid #2a2a4a; }
-tbody tr:hover { background: rgba(255,215,0,0.05); }
-tbody tr:hover .product-link { color: #ffd700; }
-.rank { font-weight: bold; font-size: 16px; text-align: center; width: 50px; }
-.rank-1 { color: #ffd700; } .rank-2 { color: #c0c0c0; } .rank-3 { color: #cd7f32; }
-.product-link { color: #4ecdc4; text-decoration: none; display: block; max-width: 340px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; transition: color 0.2s; }
-.product-link:hover { color: #ffd700; text-decoration: underline; }
-.shop-name { font-size: 11px; color: #666; margin-top: 2px; }
-.unit-price { font-size: 11px; color: #ffd700; margin-top: 1px; }
-.sales { font-weight: bold; color: #ff6b6b; }
-.commission { color: #4ecdc4; font-weight: bold; }
-.commission-high { color: #ffd700; }
-.no-data { text-align: center; padding: 60px; color: #555; font-size: 16px; }
-.footer { text-align: center; padding: 20px; color: #555; font-size: 12px; }
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei',sans-serif;background:#08080f;color:#e0e0e0;overflow-x:hidden;-webkit-tap-highlight-color:transparent}
+#bg-canvas{position:fixed;top:0;left:0;width:100%;height:100%;z-index:0;pointer-events:none}
+.container{position:relative;z-index:1;max-width:1100px;margin:0 auto;padding:16px}
+.header{text-align:center;padding:28px 16px 22px;background:linear-gradient(135deg,rgba(20,15,40,.92),rgba(18,20,55,.92),rgba(10,30,60,.92));border-radius:20px;margin-bottom:20px;border:1px solid rgba(255,215,0,.12);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px)}
+.header h1{font-size:clamp(18px,4vw,28px);color:#ffd700;margin-bottom:6px;letter-spacing:1px;text-shadow:0 0 30px rgba(255,215,0,.3)}
+.header .date{color:#ff6b6b;font-size:14px;margin-top:4px}
+.header .sub{color:#667;font-size:12px;margin-top:2px}
+.date-nav{display:flex;justify-content:center;align-items:center;gap:10px;margin-bottom:20px;flex-wrap:wrap}
+.date-nav button{background:rgba(20,18,40,.85);color:#ffd700;border:1px solid rgba(255,215,0,.25);padding:10px 18px;border-radius:25px;cursor:pointer;font-size:14px;transition:all .25s;backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);min-height:44px}
+.date-nav button:hover{background:rgba(255,215,0,.12);border-color:#ffd700;box-shadow:0 0 20px rgba(255,215,0,.15)}
+.date-nav button:disabled{color:#444;border-color:rgba(255,255,255,.08);cursor:not-allowed;box-shadow:none;background:rgba(20,18,40,.5)}
+.date-nav .current-date{font-size:clamp(15px,3vw,18px);font-weight:bold;color:#fff;min-width:110px;text-align:center}
+.date-nav input[type=date]{background:rgba(20,18,40,.85);color:#fff;border:1px solid rgba(255,215,0,.25);padding:8px 14px;border-radius:25px;font-size:14px;backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);min-height:44px}
+.date-nav input[type=date]::-webkit-calendar-picker-indicator{filter:invert(1)}
+.stats-row{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:20px}
+.stat-card{background:rgba(18,16,38,.85);border-radius:16px;padding:18px 12px;text-align:center;border:1px solid rgba(255,215,0,.1);backdrop-filter:blur(15px);-webkit-backdrop-filter:blur(15px);transition:all .3s}
+.stat-card:hover{border-color:rgba(255,215,0,.3);transform:translateY(-2px);box-shadow:0 8px 30px rgba(0,0,0,.3)}
+.stat-card .value{font-size:clamp(20px,3.5vw,30px);font-weight:bold;background:linear-gradient(135deg,#ffd700,#ffaa00);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.stat-card .label{font-size:11px;color:#778;margin-top:4px}
+.charts-row{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin:20px 0}
+.chart-box{background:rgba(18,16,38,.85);border-radius:16px;padding:16px;border:1px solid rgba(255,215,0,.08);backdrop-filter:blur(15px);-webkit-backdrop-filter:blur(15px)}
+.chart-box h3{color:#ffd700;font-size:14px;margin-bottom:12px;padding-left:8px;border-left:3px solid #ffd700}
+.chart-box canvas{max-height:260px}
+.section-title{font-size:clamp(16px,3vw,20px);color:#ffd700;margin:20px 0 12px;padding-left:12px;border-left:4px solid #ffd700;text-shadow:0 0 20px rgba(255,215,0,.3)}
+.table-wrap{background:rgba(18,16,38,.85);border-radius:16px;overflow:hidden;border:1px solid rgba(255,215,0,.08);backdrop-filter:blur(15px);-webkit-backdrop-filter:blur(15px);-webkit-overflow-scrolling:touch}
+.table-scroll{overflow-x:auto}
+table{width:100%;border-collapse:collapse;min-width:600px}
+thead th{background:rgba(20,18,50,.95);color:#ffd700;padding:12px 14px;text-align:left;font-size:13px;position:sticky;top:0;z-index:2}
+tbody td{padding:10px 14px;font-size:13px;border-bottom:1px solid rgba(255,255,255,.04)}
+tbody tr{transition:all .2s}
+tbody tr:hover{background:rgba(255,215,0,.04)}
+.rank{font-weight:bold;font-size:15px;text-align:center;width:44px}
+.rank-1{color:#ffd700;text-shadow:0 0 12px rgba(255,215,0,.5)}
+.rank-2{color:#c0c0c0;text-shadow:0 0 8px rgba(192,192,192,.4)}
+.rank-3{color:#cd7f32;text-shadow:0 0 8px rgba(205,127,50,.4)}
+.product-link{color:#4ecdc4;text-decoration:none;display:block;max-width:280px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;transition:all .2s}
+.product-link:hover{color:#ffd700}
+.shop-name{font-size:11px;color:#556;margin-top:2px}
+.unit-price{font-size:11px;color:#ffd700;margin-top:1px;opacity:.8}
+.sales{font-weight:bold;color:#ff6b6b;white-space:nowrap}
+.commission{color:#4ecdc4;font-weight:bold;white-space:nowrap;font-size:12px}
+.commission-high{color:#ffd700}
+.no-data{text-align:center;padding:60px;color:#555;font-size:16px}
+.footer{text-align:center;padding:24px;color:#445;font-size:11px}
+.glow{animation:pulse 2s ease-in-out infinite}
+@keyframes pulse{0%,100%{opacity:.6}50%{opacity:1}}
+@media(max-width:768px){
+  .container{padding:10px}
+  .header{padding:20px 12px 16px;border-radius:14px;margin-bottom:14px}
+  .header h1{font-size:17px}
+  .stats-row{grid-template-columns:repeat(2,1fr);gap:8px}
+  .stat-card{padding:14px 8px;border-radius:12px}
+  .stat-card .value{font-size:22px}
+  .charts-row{grid-template-columns:1fr}
+  .chart-box canvas{max-height:220px}
+  .date-nav{gap:6px}
+  .date-nav button{padding:8px 12px;font-size:12px;min-height:40px}
+  .date-nav input[type=date]{padding:6px 10px;font-size:12px;min-height:40px}
+  .product-link{max-width:160px;font-size:12px}
+  tbody td{padding:8px 8px;font-size:12px}
+  thead th{padding:8px 8px;font-size:11px}
+  .table-scroll table{min-width:480px}
+  .section-title{margin:14px 0 8px}
+}
+@media(max-width:400px){
+  .stats-row{grid-template-columns:repeat(2,1fr);gap:6px}
+  .stat-card{padding:10px 6px}
+  .stat-card .value{font-size:18px}
+  .stat-card .label{font-size:10px}
+  .date-nav button{padding:6px 10px;font-size:11px}
+  .product-link{max-width:110px}
+}
 </style>
 </head>
 <body>
+<canvas id="bg-canvas"></canvas>
 <div class="container">
 
 <div class="header">
-  <h1>📊 抖音直播带货 · 爆款榜日报</h1>
+  <h1 class="glow">抖音直播带货 · 爆款榜日报</h1>
   <div class="date" id="dateDisplay">--</div>
-  <div class="sub">数据来源：巨量百应 · 爆款榜（昨日 / 直播） | 自动化采集</div>
+  <div class="sub">巨量百应 · 爆款榜（昨日 / 直播）</div>
 </div>
 
 <div class="date-nav">
@@ -67,127 +102,163 @@ tbody tr:hover .product-link { color: #ffd700; }
 <div class="stats-row">
   <div class="stat-card"><div class="value" id="totalSales">--</div><div class="label">昨日总销量</div></div>
   <div class="stat-card"><div class="value" id="avgCommission">--</div><div class="label">平均佣金率</div></div>
-  <div class="stat-card"><div class="value" id="maxEarn">--</div><div class="label">最高佣金 (¥/单)</div></div>
+  <div class="stat-card"><div class="value" id="maxEarn">--</div><div class="label">最高佣金/单</div></div>
   <div class="stat-card"><div class="value" id="topProduct">--</div><div class="label">销量冠军</div></div>
 </div>
 
 <div class="charts-row">
-  <div class="chart-box"><h3>📈 Top 10 昨日销量</h3><canvas id="salesChart"></canvas></div>
-  <div class="chart-box"><h3>💰 佣金率对比 (%)</h3><canvas id="commissionChart"></canvas></div>
+  <div class="chart-box"><h3>Top 10 昨日销量</h3><canvas id="salesChart"></canvas></div>
+  <div class="chart-box"><h3>佣金率对比</h3><canvas id="commissionChart"></canvas></div>
 </div>
 
-<h2 class="section-title">🏆 完整榜单 Top 20</h2>
+<h2 class="section-title">完整榜单 Top 20</h2>
 <div class="table-wrap">
-<table><thead><tr><th style="width:50px">排名</th><th>商品名称 / 店铺</th><th style="width:100px">昨日销量</th><th style="width:130px">佣金</th></tr></thead>
+<div class="table-scroll">
+<table><thead><tr><th>排名</th><th>商品 / 店铺</th><th>昨日销量</th><th>佣金</th></tr></thead>
 <tbody id="tableBody"></tbody></table>
 </div>
+</div>
 
-<div class="footer">点击商品名称跳转详情页 | 数据来源: 巨量百应</div>
+<div class="footer">点击商品名称跳转详情页 · 数据来源: 巨量百应</div>
 </div>
 
 <script>
-var allDates = {};
-var availableDates = [];
-var currentIndex = 0;
-var salesChart = null;
-var commissionChart = null;
+// === Three.js 3D Background ===
+(function(){
+  var canvas=document.getElementById('bg-canvas');
+  var renderer=new THREE.WebGLRenderer({canvas:canvas,antialias:true,alpha:true});
+  renderer.setPixelRatio(Math.min(window.devicePixelRatio,2));
+  renderer.setSize(window.innerWidth,window.innerHeight);
+  var scene=new THREE.Scene();
+  var camera=new THREE.PerspectiveCamera(60,window.innerWidth/window.innerHeight,0.1,100);
+  camera.position.z=30;
 
-function parseSalesInt(s) { return parseInt(String(s||'0').replace('万','0000')) || 0; }
-
-function loadDateList() {
-  fetch('data/all.json').then(function(r){return r.json()}).then(function(all) {
-    allDates = all;
-    availableDates = Object.keys(all).sort();
-    if (availableDates.length > 0) {
-      currentIndex = availableDates.length - 1;
-      renderDate(availableDates[currentIndex]);
-    }
-    updateNavButtons();
-  }).catch(function() {
-    document.getElementById('tableBody').innerHTML = '<tr><td colspan="4" class="no-data">数据加载失败</td></tr>';
-  });
-}
-
-function updateNavButtons() {
-  document.getElementById('btnPrev').disabled = currentIndex <= 0;
-  document.getElementById('btnNext').disabled = currentIndex >= availableDates.length - 1;
-  if (availableDates.length > 0) {
-    document.getElementById('datePicker').value = availableDates[currentIndex];
+  // Floating particles
+  var particlesGeo=new THREE.BufferGeometry();
+  var count=window.innerWidth<768?400:800;
+  var positions=new Float32Array(count*3);
+  var colors=new Float32Array(count*3);
+  var gold=new THREE.Color('#ffd700');
+  var cyan=new THREE.Color('#4ecdc4');
+  var pink=new THREE.Color('#ff6b6b');
+  for(var i=0;i<count*3;i+=3){
+    positions[i]=(Math.random()-0.5)*50;
+    positions[i+1]=(Math.random()-0.5)*40;
+    positions[i+2]=(Math.random()-0.5)*20;
+    var mix=Math.random();
+    var c=mix<.6?gold.clone().lerp(cyan,mix/.6):cyan.clone().lerp(pink,(mix-.6)/.4);
+    colors[i]=c.r;colors[i+1]=c.g;colors[i+2]=c.b;
   }
-}
+  particlesGeo.setAttribute('position',new THREE.BufferAttribute(positions,3));
+  particlesGeo.setAttribute('color',new THREE.BufferAttribute(colors,3));
+  var particlesMat=new THREE.PointsMaterial({size:.12,vertexColors:true,blending:THREE.AdditiveBlending,depthWrite:false,transparent:true,opacity:.8});
+  var particles=new THREE.Points(particlesGeo,particlesMat);
+  scene.add(particles);
 
-function changeDate(delta) {
-  var idx = currentIndex + delta;
-  if (idx >= 0 && idx < availableDates.length) {
-    currentIndex = idx;
-    renderDate(availableDates[currentIndex]);
-    updateNavButtons();
+  // Floating rings
+  var rings=[];
+  for(var r=0;r<5;r++){
+    var ringGeo=new THREE.TorusGeometry(3+r*2,.02,16,100);
+    var ringMat=new THREE.MeshBasicMaterial({color:new THREE.Color().setHSL(.13+r*.03,.8,.5+r*.05),transparent:true,opacity:.15,blending:THREE.AdditiveBlending,depthWrite:false});
+    var ring=new THREE.Mesh(ringGeo,ringMat);
+    ring.rotation.x=Math.random()*Math.PI;
+    ring.rotation.y=Math.random()*Math.PI;
+    ring.position.set((Math.random()-.5)*20,(Math.random()-.5)*15,(Math.random()-.5)*8-3);
+    ring.userData={speed:.002+r*.001,rotAxis:new THREE.Vector3(Math.random()-.5,Math.random()-.5,Math.random()-.5).normalize()};
+    scene.add(ring);
+    rings.push(ring);
   }
+
+  // Mouse interaction
+  var mouseX=0,mouseY=0,targetX=0,targetY=0;
+  document.addEventListener('mousemove',function(e){targetX=(e.clientX/window.innerWidth-0.5)*8;targetY=(e.clientY/window.innerHeight-0.5)*6});
+  document.addEventListener('touchmove',function(e){targetX=(e.touches[0].clientX/window.innerWidth-0.5)*8;targetY=(e.touches[0].clientY/window.innerHeight-0.5)*6});
+
+  function animate(){
+    requestAnimationFrame(animate);
+    mouseX+=(targetX-mouseX)*0.03;
+    mouseY+=(targetY-mouseY)*0.03;
+    particles.rotation.y+=.0003;
+    particles.rotation.x+=.0001;
+    particles.position.x+=(mouseX-particles.position.x)*.01;
+    particles.position.y+=(mouseY-particles.position.y)*.01;
+    rings.forEach(function(r){
+      r.rotation.x+=r.userData.speed*r.userData.rotAxis.x;
+      r.rotation.y+=r.userData.speed*r.userData.rotAxis.y;
+      r.rotation.z+=r.userData.speed*r.userData.rotAxis.z;
+    });
+    renderer.render(scene,camera);
+  }
+  animate();
+  window.addEventListener('resize',function(){
+    renderer.setSize(window.innerWidth,window.innerHeight);
+    camera.aspect=window.innerWidth/window.innerHeight;
+    camera.updateProjectionMatrix();
+  });
+})();
+
+// === Data Logic ===
+var allDates={};
+var availableDates=[];
+var currentIndex=0;
+var salesChart=null,commissionChart=null;
+
+function parseSalesInt(s){return parseInt(String(s||'0').replace('万','0000'))||0}
+
+function loadDateList(){
+  fetch('data/all.json').then(function(r){return r.json()}).then(function(all){
+    allDates=all;availableDates=Object.keys(all).sort();
+    if(availableDates.length>0){currentIndex=availableDates.length-1;renderDate(availableDates[currentIndex])}
+    updateNavButtons();
+  }).catch(function(){
+    document.getElementById('tableBody').innerHTML='<tr><td colspan="4" class="no-data">数据加载失败</td></tr>';
+  });
 }
 
-function jumpToDate(dateStr) {
-  var idx = availableDates.indexOf(dateStr);
-  if (idx >= 0) { currentIndex = idx; renderDate(dateStr); updateNavButtons(); }
-  else { alert('该日期暂无数据'); }
+function updateNavButtons(){
+  document.getElementById('btnPrev').disabled=currentIndex<=0;
+  document.getElementById('btnNext').disabled=currentIndex>=availableDates.length-1;
+  if(availableDates.length>0)document.getElementById('datePicker').value=availableDates[currentIndex];
 }
 
-function renderDate(dateStr) {
-  var rec = allDates[dateStr];
-  if (!rec) return;
-  var data = rec.products || [];
-  document.getElementById('dateDisplay').textContent = rec.title || dateStr;
-  document.getElementById('currentDate').textContent = dateStr;
+function changeDate(d){
+  var i=currentIndex+d;
+  if(i>=0&&i<availableDates.length){currentIndex=i;renderDate(availableDates[i]);updateNavButtons()}
+}
 
-  var totalSales = data.reduce(function(s,i){return s+parseSalesInt(i.sales)},0);
-  var avgRate = (data.reduce(function(s,i){return s+(i.cos_ratio||0)},0) / Math.max(data.length,1)).toFixed(1);
-  var maxEarn = (Math.max.apply(null, data.map(function(i){return (i.cos_fee||0)/100}))).toFixed(2);
-  var topTitle = data.length > 0 ? data[0].title.substring(0,16)+'...' : '--';
+function jumpToDate(s){
+  var i=availableDates.indexOf(s);
+  if(i>=0){currentIndex=i;renderDate(s);updateNavButtons()}else{alert('该日期暂无数据')}
+}
 
-  document.getElementById('totalSales').textContent = totalSales >= 10000 ? Math.floor(totalSales/10000)+'万' : String(totalSales);
-  document.getElementById('avgCommission').textContent = avgRate+'%';
-  document.getElementById('maxEarn').textContent = '¥'+maxEarn;
-  document.getElementById('topProduct').textContent = topTitle;
-
-  var tbody = document.getElementById('tableBody');
-  tbody.innerHTML = '';
-  data.forEach(function(item, i) {
-    var tr = document.createElement('tr');
-    var rankClass = i < 3 ? ' rank-'+(i+1) : '';
-    var commClass = (item.cos_ratio||0) >= 20 ? ' commission-high' : '';
-    var salesNum = parseSalesInt(item.sales);
-    var salesDisplay = salesNum >= 10000 ? Math.floor(salesNum/10000)+'万' : String(salesNum);
-    tr.innerHTML =
-      '<td class="rank'+rankClass+'">'+(i+1)+'</td>'+
-      '<td>'+
-        '<a class="product-link" href="'+item.detail_url+'" target="_blank" title="点击跳转商品详情">'+item.title+'</a>'+
-        '<div class="shop-name">'+item.shop_name+'</div>'+
-        '<div class="unit-price">客单价 ¥'+(item.unit_price||0).toFixed(2)+'</div>'+
-      '</td>'+
-      '<td class="sales">'+salesDisplay+'</td>'+
-      '<td class="commission'+commClass+'">'+(item.commission||(item.cos_ratio+'%赚¥'+((item.cos_fee||0)/100).toFixed(2)))+'</td>';
-    tbody.appendChild(tr);
+function renderDate(dateStr){
+  var rec=allDates[dateStr];if(!rec)return;
+  var data=rec.products||[];
+  document.getElementById('dateDisplay').textContent=rec.title||dateStr;
+  document.getElementById('currentDate').textContent=dateStr;
+  var ts=data.reduce(function(s,i){return s+parseSalesInt(i.sales)},0);
+  var ar=(data.reduce(function(s,i){return s+(i.cos_ratio||0)},0)/Math.max(data.length,1)).toFixed(1);
+  var me=(Math.max.apply(null,data.map(function(i){return(i.cos_fee||0)/100}))).toFixed(2);
+  var tt=data.length>0?data[0].title.substring(0,12)+'...':'--';
+  document.getElementById('totalSales').textContent=ts>=10000?Math.floor(ts/10000)+'万':String(ts);
+  document.getElementById('avgCommission').textContent=ar+'%';
+  document.getElementById('maxEarn').textContent='¥'+me;
+  document.getElementById('topProduct').textContent=tt;
+  var tb=document.getElementById('tableBody');tb.innerHTML='';
+  data.forEach(function(item,i){
+    var tr=document.createElement('tr');
+    var rc=i<3?' rank-'+(i+1):'';
+    var cc=(item.cos_ratio||0)>=20?' commission-high':'';
+    var sn=parseSalesInt(item.sales);
+    var sd=sn>=10000?Math.floor(sn/10000)+'万':String(sn);
+    tr.innerHTML='<td class="rank'+rc+'">'+(i+1)+'</td><td><a class="product-link" href="'+item.detail_url+'" target="_blank">'+item.title+'</a><div class="shop-name">'+item.shop_name+'</div><div class="unit-price">客单价 ¥'+(item.unit_price||0).toFixed(2)+'</div></td><td class="sales">'+sd+'</td><td class="commission'+cc+'">'+(item.commission||(item.cos_ratio+'%赚¥'+((item.cos_fee||0)/100).toFixed(2)))+'</td>';
+    tb.appendChild(tr);
   });
-
-  var top10 = data.slice(0,10);
-  if (salesChart) salesChart.destroy();
-  if (commissionChart) commissionChart.destroy();
-
-  salesChart = new Chart(document.getElementById('salesChart').getContext('2d'), {
-    type: 'bar',
-    data: {
-      labels: top10.map(function(_,i){return '#'+(i+1)}),
-      datasets: [{data: top10.map(function(i){return parseSalesInt(i.sales)/10000}), backgroundColor: top10.map(function(_,i){return i<3?'rgba(255,215,0,0.8)':'rgba(78,205,196,0.5)'}), borderColor: top10.map(function(_,i){return i<3?'#ffd700':'#4ecdc4'}), borderWidth:1, borderRadius:4}]
-    },
-    options: {responsive:true, plugins:{legend:{display:false}}, scales:{y:{grid:{color:'rgba(255,255,255,0.05)'},ticks:{color:'#889'}},x:{ticks:{color:'#889'}}}}
-  });
-  commissionChart = new Chart(document.getElementById('commissionChart').getContext('2d'), {
-    type: 'line',
-    data: {
-      labels: top10.map(function(_,i){return '#'+(i+1)}),
-      datasets: [{data: top10.map(function(i){return i.cos_ratio||0}), borderColor:'#ff6b6b', backgroundColor:'rgba(255,107,107,0.1)', fill:true, tension:0.4, pointBackgroundColor:'#ff6b6b', pointRadius:5}]
-    },
-    options: {responsive:true, plugins:{legend:{display:false}}, scales:{y:{grid:{color:'rgba(255,255,255,0.05)'},ticks:{color:'#889', callback:function(v){return v+'%'}}},x:{ticks:{color:'#889'}}}}
-  });
+  var t10=data.slice(0,10);
+  if(salesChart)salesChart.destroy();
+  if(commissionChart)commissionChart.destroy();
+  salesChart=new Chart(document.getElementById('salesChart').getContext('2d'),{type:'bar',data:{labels:t10.map(function(_,i){return'#'+(i+1)}),datasets:[{data:t10.map(function(i){return parseSalesInt(i.sales)/10000}),backgroundColor:t10.map(function(_,i){return i<3?'rgba(255,215,0,0.7)':'rgba(78,205,196,0.4)'}),borderColor:t10.map(function(_,i){return i<3?'#ffd700':'#4ecdc4'}),borderWidth:1,borderRadius:6}]},options:{responsive:true,plugins:{legend:{display:false}},scales:{y:{grid:{color:'rgba(255,255,255,0.04)'},ticks:{color:'#889',callback:function(v){return v+'万'}}},x:{grid:{display:false},ticks:{color:'#889'}}}}});
+  commissionChart=new Chart(document.getElementById('commissionChart').getContext('2d'),{type:'line',data:{labels:t10.map(function(_,i){return'#'+(i+1)}),datasets:[{data:t10.map(function(i){return i.cos_ratio||0}),borderColor:'#ff6b6b',backgroundColor:'rgba(255,107,107,0.08)',fill:true,tension:.4,pointBackgroundColor:'#ff6b6b',pointRadius:4,pointHoverRadius:7,borderWidth:2}]},options:{responsive:true,plugins:{legend:{display:false}},scales:{y:{grid:{color:'rgba(255,255,255,0.04)'},ticks:{color:'#889',callback:function(v){return v+'%'}}},x:{grid:{display:false},ticks:{color:'#889'}}}}});
 }
 
 loadDateList();
