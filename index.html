@@ -10,13 +10,13 @@
 <script src="https://cdn.bootcdn.net/ajax/libs/Chart.js/4.4.0/chart.umd.min.js" onerror="this.onerror=null;this.src='https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js'"></script>
 <style>
 :root {
-  --primary: #fa520f;
-  --primary-deep: #cc3a05;
-  --sunshine-300: #ffd06a;
-  --sunshine-500: #ffb83e;
-  --sunshine-700: #ffa110;
-  --sunshine-900: #ff8a00;
-  --yellow-saturated: #ffd900;
+  --primary: #00bcd4;
+  --primary-deep: #0097a7;
+  --sunshine-300: #4dd0e1;
+  --sunshine-500: #00bcd4;
+  --sunshine-700: #0097a7;
+  --sunshine-900: #006064;
+  --yellow-saturated: #18ffff;
   --cream: #1a1a28;
   --cream-soft: #222236;
   --cream-deeper: #2a2a3e;
@@ -37,7 +37,7 @@
   --on-dark: #ffffff;
   --on-dark-muted: #787898;
   --on-cream: #e8e8f0;
-  --link: #ff8a00;
+  --link: #00bcd4;
   --spacing-xs: 8px;
   --spacing-sm: 12px;
   --spacing-md: 16px;
@@ -245,9 +245,9 @@ function renderDate(dateStr){
   if(salesChart)salesChart.destroy();
   if(commissionChart)commissionChart.destroy();
 
-  salesChart=new Chart(document.getElementById('salesChart').getContext('2d'),{type:'bar',data:{labels:t10.map(function(_,i){return'#'+(i+1)}),datasets:[{data:t10.map(function(i){return parseSalesInt(i.sales)/10000}),backgroundColor:['#fa520f','#fa520f','#fa520f','#ffb83e','#ffb83e','#ffb83e','#ffd06a','#ffd06a','#ffd06a','#ffd06a'],borderRadius:6}]},options:{responsive:true,plugins:{legend:{display:false}},scales:{y:{grid:{color:'rgba(255,255,255,0.06)'},ticks:{color:'#787898',callback:function(v){return v+'万'}}},x:{grid:{display:false},ticks:{color:'#787898'}}}}});
+  salesChart=new Chart(document.getElementById('salesChart').getContext('2d'),{type:'bar',data:{labels:t10.map(function(_,i){return'#'+(i+1)}),datasets:[{data:t10.map(function(i){return parseSalesInt(i.sales)/10000}),backgroundColor:['#00bcd4','#00bcd4','#00bcd4','#0097a7','#0097a7','#0097a7','#4dd0e1','#4dd0e1','#4dd0e1','#4dd0e1'],borderRadius:6}]},options:{responsive:true,plugins:{legend:{display:false}},scales:{y:{grid:{color:'rgba(255,255,255,0.06)'},ticks:{color:'#787898',callback:function(v){return v+'万'}}},x:{grid:{display:false},ticks:{color:'#787898'}}}}});
 
-  commissionChart=new Chart(document.getElementById('commissionChart').getContext('2d'),{type:'line',data:{labels:t10.map(function(_,i){return'#'+(i+1)}),datasets:[{data:t10.map(function(i){return i.cos_ratio||0}),borderColor:'#fa520f',backgroundColor:'rgba(250,82,15,0.1)',fill:true,tension:.4,pointBackgroundColor:'#fa520f',pointRadius:4,pointHoverRadius:7,borderWidth:2}]},options:{responsive:true,plugins:{legend:{display:false}},scales:{y:{grid:{color:'rgba(255,255,255,0.06)'},ticks:{color:'#787898',callback:function(v){return v+'%'}}},x:{grid:{display:false},ticks:{color:'#787898'}}}}});
+  commissionChart=new Chart(document.getElementById('commissionChart').getContext('2d'),{type:'line',data:{labels:t10.map(function(_,i){return'#'+(i+1)}),datasets:[{data:t10.map(function(i){return i.cos_ratio||0}),borderColor:'#00bcd4',backgroundColor:'rgba(0,188,212,0.1)',fill:true,tension:.4,pointBackgroundColor:'#00bcd4',pointRadius:4,pointHoverRadius:7,borderWidth:2}]},options:{responsive:true,plugins:{legend:{display:false}},scales:{y:{grid:{color:'rgba(255,255,255,0.06)'},ticks:{color:'#787898',callback:function(v){return v+'%'}}},x:{grid:{display:false},ticks:{color:'#787898'}}}}});
 }
 
 loadDateList();
