@@ -1026,5 +1026,252 @@
         "shop_name": "嫩益官方旗舰店"
       }
     ]
+  },
+  "2026-05-11": {
+    "date": "2026-05-11",
+    "title": "抖音直播带货 · 爆款榜日报 2026年05月11日",
+    "source": "巨量百应 爆款榜 (昨日/直播)",
+    "products": [
+      {
+        "rank": "1",
+        "title": "【洗护套组】赫系洗发水控油蓬松持久去屑香氛洗发水护发素",
+        "detail_url": "https://haohuo.jinritemai.com/views/product/item2?id=3690314073582469486",
+        "sales": "6万",
+        "month_sales": "6万",
+        "commission": "5%赚¥3.00",
+        "cos_ratio": 5,
+        "cos_fee": 300,
+        "unit_price": 60,
+        "shop_name": "赫系官方旗舰店"
+      },
+      {
+        "rank": "2",
+        "title": "公仔牌顽渍净洗衣粉轻松搓洗去污渍除菌除螨3倍洁净去渍家用去黄",
+        "detail_url": "https://haohuo.jinritemai.com/views/product/item2?id=3725778917873811811",
+        "sales": "5万",
+        "month_sales": "279万",
+        "commission": "33%赚¥9.87",
+        "cos_ratio": 33,
+        "cos_fee": 987,
+        "unit_price": 29.91,
+        "shop_name": "公仔牌官方旗舰店"
+      },
+      {
+        "rank": "3",
+        "title": "【买一送一】自然堂洗面奶水润焕亮洗颜霜洁面洗卸合一不紧绷",
+        "detail_url": "https://haohuo.jinritemai.com/views/product/item2?id=3757290916805738924",
+        "sales": "5万",
+        "month_sales": "66万",
+        "commission": "15%投放期5%最高赚¥5.85",
+        "cos_ratio": 15,
+        "cos_fee": 585,
+        "unit_price": 39,
+        "shop_name": "自然堂官方旗舰店"
+      },
+      {
+        "rank": "4",
+        "title": "【苗总补贴】国标品质高定洗衣粉",
+        "detail_url": "https://haohuo.jinritemai.com/views/product/item2?id=3814450983044514250",
+        "sales": "4万",
+        "month_sales": "6万",
+        "commission": "5%赚¥9.95",
+        "cos_ratio": 5,
+        "cos_fee": 995,
+        "unit_price": 199,
+        "shop_name": "山山的小店001"
+      },
+      {
+        "rank": "5",
+        "title": "2026年露天种植当季鲜嫩红帽脆嫩蒜苔P",
+        "detail_url": "https://haohuo.jinritemai.com/views/product/item2?id=3818890098041290886",
+        "sales": "4万",
+        "month_sales": "6万",
+        "commission": "11%赚¥1.10",
+        "cos_ratio": 11,
+        "cos_fee": 110,
+        "unit_price": 10,
+        "shop_name": "铁扇公主的水果店"
+      },
+      {
+        "rank": "6",
+        "title": "【草本初色蚕丝安全裤】三合一香氛无痕非遗宋锦金钱纹不卷边防走光",
+        "detail_url": "https://haohuo.jinritemai.com/views/product/item2?id=3805729852192063702",
+        "sales": "4万",
+        "month_sales": "60万",
+        "commission": "5%赚¥2.50",
+        "cos_ratio": 5,
+        "cos_fee": 250,
+        "unit_price": 50,
+        "shop_name": "草本初色优品服装旗舰店"
+      },
+      {
+        "rank": "7",
+        "title": "【王一博同款】水卫士浴室清洁剂去污除菌玻璃去黄渍除垢卫浴家用",
+        "detail_url": "https://haohuo.jinritemai.com/views/product/item2?id=3589788114396290509",
+        "sales": "4万",
+        "month_sales": "86万",
+        "commission": "5%赚¥1.50",
+        "cos_ratio": 5,
+        "cos_fee": 150,
+        "unit_price": 30,
+        "shop_name": "水卫士官方旗舰店"
+      },
+      {
+        "rank": "8",
+        "title": "【官方正品拍一发二】白云山抗皱紧致眼部精华油眼油男女通用护肤",
+        "detail_url": "https://haohuo.jinritemai.com/views/product/item2?id=3669366384334340115",
+        "sales": "3万",
+        "month_sales": "54万",
+        "commission": "5%赚¥3.50",
+        "cos_ratio": 5,
+        "cos_fee": 350,
+        "unit_price": 70,
+        "shop_name": "白云山威古卓专卖店"
+      },
+      {
+        "rank": "9",
+        "title": "欧洲站2026夏季新款欧货时尚翻领单排扣百搭休闲短款外套女防晒衣",
+        "detail_url": "https://haohuo.jinritemai.com/views/product/item2?id=3818884432903930161",
+        "sales": "3万",
+        "month_sales": "4万",
+        "commission": "13%赚¥5.19",
+        "cos_ratio": 13,
+        "cos_fee": 519,
+        "unit_price": 39.92,
+        "shop_name": "乐乐定制工厂店二"
+      },
+      {
+        "rank": "10",
+        "title": "【益生菌卫生巾】迷你巾医护级姨妈巾超薄亲肤超薄透气日夜用迷你巾",
+        "detail_url": "https://haohuo.jinritemai.com/views/product/item2?id=3723009520671261035",
+        "sales": "3万",
+        "month_sales": "68万",
+        "commission": "5%赚¥0.50",
+        "cos_ratio": 5,
+        "cos_fee": 50,
+        "unit_price": 10,
+        "shop_name": "高端女生"
+      },
+      {
+        "rank": "11",
+        "title": "【苗总补贴】国标品质高定小苏打皂",
+        "detail_url": "https://haohuo.jinritemai.com/views/product/item2?id=3814451760467149015",
+        "sales": "3万",
+        "month_sales": "6万",
+        "commission": "5%赚¥9.95",
+        "cos_ratio": 5,
+        "cos_fee": 995,
+        "unit_price": 199,
+        "shop_name": "山山的小店001"
+      },
+      {
+        "rank": "12",
+        "title": "夏季女款防滑防勾丝肉色透明无痕水晶短袜",
+        "detail_url": "https://haohuo.jinritemai.com/views/product/item2?id=3816852273364074776",
+        "sales": "3万",
+        "month_sales": "25万",
+        "commission": "35%赚¥3.47",
+        "cos_ratio": 35,
+        "cos_fee": 347,
+        "unit_price": 9.91,
+        "shop_name": "婷然优选好物"
+      },
+      {
+        "rank": "13",
+        "title": "【秋瓷炫小鱼海棠推荐】eiio水光面膜补水保湿透亮嫩肤紧致抗皱滋养",
+        "detail_url": "https://haohuo.jinritemai.com/views/product/item2?id=3632053459521540584",
+        "sales": "3万",
+        "month_sales": "64万",
+        "commission": "5%赚¥4.95",
+        "cos_ratio": 5,
+        "cos_fee": 495,
+        "unit_price": 99,
+        "shop_name": "EIIO奕沃官方旗舰店"
+      },
+      {
+        "rank": "14",
+        "title": "【女士进阶PRO】GNC女士PRO进阶营养包30包/袋 精准定制全面营养",
+        "detail_url": "https://haohuo.jinritemai.com/views/product/item2?id=3818343078046073228",
+        "sales": "3万",
+        "month_sales": "3万",
+        "commission": "50%赚¥999.50",
+        "cos_ratio": 50,
+        "cos_fee": 99950,
+        "unit_price": 1999,
+        "shop_name": "GNC健安喜海外旗舰店"
+      },
+      {
+        "rank": "15",
+        "title": "【重磅新品】立白大师香氛天然爆香顽渍净香水级洗衣粉深层洁净sc",
+        "detail_url": "https://haohuo.jinritemai.com/views/product/item2?id=3814779953875124236",
+        "sales": "3万",
+        "month_sales": "62万",
+        "commission": "5%赚¥1.50",
+        "cos_ratio": 5,
+        "cos_fee": 150,
+        "unit_price": 30,
+        "shop_name": "立白官方旗舰店"
+      },
+      {
+        "rank": "16",
+        "title": "【赵荀推荐拍一发三】木子言身体素颜霜防水防汗防蹭提亮不假白持久",
+        "detail_url": "https://haohuo.jinritemai.com/views/product/item2?id=3613672719637439244",
+        "sales": "3万",
+        "month_sales": "94万",
+        "commission": "5%赚¥2.00",
+        "cos_ratio": 5,
+        "cos_fee": 200,
+        "unit_price": 40,
+        "shop_name": "木子言官方旗舰店"
+      },
+      {
+        "rank": "17",
+        "title": "超市在售悬挂式纸干湿两用擦手厕纸抽原生木浆5层400抽2000张",
+        "detail_url": "https://haohuo.jinritemai.com/views/product/item2?id=3818871399683063998",
+        "sales": "3万",
+        "month_sales": "2万",
+        "commission": "5%投放期5%最高赚¥4.95",
+        "cos_ratio": 5,
+        "cos_fee": 495,
+        "unit_price": 99,
+        "shop_name": "李大雪儿纸品店铺"
+      },
+      {
+        "rank": "18",
+        "title": "Ufeel凉感奶皮高腰收腹无痕隐形提臀塑形10A抗菌加长底裆内裤1912",
+        "detail_url": "https://haohuo.jinritemai.com/views/product/item2?id=3763441477359895001",
+        "sales": "3万",
+        "month_sales": "73万",
+        "commission": "5%赚¥2.00",
+        "cos_ratio": 5,
+        "cos_fee": 200,
+        "unit_price": 40,
+        "shop_name": "Ufeel女装旗舰店"
+      },
+      {
+        "rank": "19",
+        "title": "【工厂直销】夏季新款圆领短袖T恤女士百搭显瘦修身休闲上衣",
+        "detail_url": "https://haohuo.jinritemai.com/views/product/item2?id=3818143596184470043",
+        "sales": "3万",
+        "month_sales": "5万",
+        "commission": "16%赚¥1.58",
+        "cos_ratio": 16,
+        "cos_fee": 158,
+        "unit_price": 9.88,
+        "shop_name": "原猫梓烯服饰专卖店"
+      },
+      {
+        "rank": "20",
+        "title": "【官方正品】小树美玻色因焕亮精华素颜霜遮瑕提亮养肤自然美颜TY",
+        "detail_url": "https://haohuo.jinritemai.com/views/product/item2?id=3751308343118004527",
+        "sales": "3万",
+        "month_sales": "47万",
+        "commission": "5%赚¥2.00",
+        "cos_ratio": 5,
+        "cos_fee": 200,
+        "unit_price": 40,
+        "shop_name": "小树美护肤旗舰店"
+      }
+    ]
   }
 }
